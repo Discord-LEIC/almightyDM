@@ -1,0 +1,17 @@
+{
+    "token": "XXXXXXXX",
+
+    "guildID": "689545577649799179",
+    "channels": {
+        "welcome": "XXXXXXXX"
+    },
+
+    "roleSelectionEmoji": "%E2%9C%8B",
+    "msg_roles": {
+        "XXXXXXXX": "XXXXXXXX",
+        "XXXXXXXX": "XXXXXXXX",
+        "XXXXXXXX": "XXXXXXXX",
+        "XXXXXXXX": "XXXXXXXX",
+        "XXXXXXXX": "XXXXXXXX"
+    }
+}
