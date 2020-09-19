@@ -14,15 +14,19 @@ function help(...kwargs) {
     return SHORT_HELP_TEXT;
 }
 
+/**
+     * Run command
+     * @param {Client} client
+     * @param {Message} message
+     */  
 @AccessControl(roles=['Staff'], relax_pm=True)
-async function run(client: Client, message: Message, **kwargs):
-    """
-    Run command
-    """
+async function run(client, message, ...kwargs) {
     try:
-        name = kwargs['args'][0]
+    name = kwargs['args'][0]
     except IndexError:
         raise ValueError('Missing argument: name')
 
     feed_state.delete(name)
     await message.channel.send(content='Feito')
+}
+    

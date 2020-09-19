@@ -1,32 +1,39 @@
-from datetime import datetime
-from calendar import timegm
-from discord import Client, Message
+const datetime = require("datetime.js");
+const timegm = require("calendar.js");
 
-import feed_state
-from policy import AccessControl
+const Discord = require("discord.js");
+const Client = Discord.Client;
+const Message = Discord.Message;
+
+const feed_state = require('feed_state');
+const AccessControl = require('policy');
 
 SHORT_HELP_TEXT = '$$$rss setdate [nome|url] [timestamp|now|None] - \
 Redefine data de última atualização para um feed'
 
-def help(**kwargs):
-    """
-    Show help
-    """
-    return SHORT_HELP_TEXT
+/**
+     * Show help
+     */
+function help(...kwargs) {
+    return SHORT_HELP_TEXT;
+}
 
-def get_current_timestamp() -> int:
-    """
-    Get current timestamp (UTC)
-    """
+/**
+     * Get current timestamp (UTC)
+     */
+function get_current_timestamp() {
     return timegm(datetime.utcnow().utctimetuple())
+}
 
+/**
+     * Run command
+     * @param {Client} client
+     * @param {Message} message
+     */  
 @AccessControl(roles=['Staff'], relax_pm=True)
-async def run(client: Client, message: Message, **kwargs):
-    """
-    Run commands
-    """
+async function run(client, message, ...kwargs) {
     try:
-        name = kwargs['args'][0]
+    name = kwargs['args'][0]
     except IndexError:
         raise ValueError('Missing argument: name')
 
@@ -44,3 +51,5 @@ async def run(client: Client, message: Message, **kwargs):
 
     feed_state.update(name, new_last_update)
     await message.channel.send(content='Feito')
+}
+    
