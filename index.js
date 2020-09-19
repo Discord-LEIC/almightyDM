@@ -13,10 +13,6 @@ var guild;
 const testing_id = '756662963188006914';
 const bodCommands_id = '756527548862693396  ';
 
-// TODO
-//    -> Update config.json based on !command
-//
-
 client.on("ready", () => {
     console.log(`Logged in as ${client.user.tag}`);
 
@@ -100,24 +96,3 @@ client.on('message', msg => {
 
 client.login(token);
 
-
-function myLogger(message, channel = testing_id) {
-    const channel_testing = guild.channels.cache.get(channel);
-    channel_testing.send('╔═════════════[LOGGER]═════════════╗\n' + stringify(message, 5, null, 2) + '\n ╚════════════════════════════════╝');
-}
-
-function stringify(val, depth, replacer, space) {
-    depth = isNaN(+depth) ? 1 : depth;
-
-    function _build(key, val, depth, o, a) { // (JSON.stringify() has it's own rules, which we respect here by using it for property iteration)
-        return !val || typeof val != 'object' ? val : (a = Array.isArray(val), JSON.stringify(val, function(k, v) {
-            if (a || depth > 0) {
-                if (replacer) v = replacer(k, v);
-                if (!k) return (a = Array.isArray(v), val = v);
-                !o && (o = a ? [] : {});
-                o[k] = _build(k, v, a ? depth : depth - 1);
-            }
-        }), o || (a ? [] : {}));
-    }
-    return JSON.stringify(_build('', val, depth), null, space);
-}
