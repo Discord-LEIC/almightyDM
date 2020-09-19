@@ -1,23 +1,29 @@
-from discord import Client, Message
-import logging
+const Discord = require("discord.js");
+const Client = Discord.Client;
+const Message = Discord.Message;
 
-import feed_state
-from policy import AccessControl
-from management import delete_role_channel
+const logging = require("logging.js");
+const delete_role_channel = require("management.js");
+
+const feed_state = require('feed_state');
+const AccessControl = require('policy');
 
 SHORT_HELP_TEXT = '$$$rss removeall <name(s)> - Remove tudo o que está associado ao feed'
 
-def help(**kwargs):
-    """
-    Show help
-    """
-    return SHORT_HELP_TEXT
+/**
+     * Show help
+     */
+function help(...kwargs) {
+    return SHORT_HELP_TEXT;
+}
 
+/**
+     * Run command
+     * @param {Client} client
+     * @param {Message} message
+     */  
 @AccessControl(roles=['Staff'], relax_pm=True)
-async def run(client: Client, message: Message, **kwargs):
-    """
-    Run command
-    """
+async function run(client, message, ...kwargs) {
     try:
         for name in kwargs['args']:
             try:
@@ -30,3 +36,4 @@ async def run(client: Client, message: Message, **kwargs):
         raise ValueError('Missing argument: name')
 
     await message.channel.send(content='Feito')
+}
