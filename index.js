@@ -4,7 +4,8 @@ const client = new Discord.Client;
 const config = require('./config.json');
 const token = config.token; // Bot Token
 const guildID = config.guildID;
-const welcomeID = config.channels.welcome; // #welcome channel ID (this is monitored for reactions)
+
+const subscriptionChannelID = config.channels.subscribe; // #welcome channel ID (this is monitored for reactions)
 const roleSelectionEmoji = config.roleSelectionEmoji; // Emoji identifier used for role assignment
 const msg_roles = config.msg_roles; // Message ID vs Role ID mapping
 
@@ -13,31 +14,53 @@ var guild;
 const testing_id = '756662963188006914';
 const bodCommands_id = '756527548862693396  ';
 
-client.on("ready", () => {
-    console.log(`Logged in as ${client.user.tag}`);
+function get_channel(id) {
+    return guild.channels.cache.get(id);
+}
 
-    // If needed setup server
+// should only run once!
+async function setup() {
+    var courses = ["FP", "IAC", "IEI", "AL", "CDI-I", "IAED", "LP", "MD", "CDI-II", "SO", "PO", "ACED", "MO", "Ges", "ASA", "IPM", "TC", "EO", "PE", "BD", "CG", "IA", "OC", "RC", "AMS", "Compiladores", "CS", "ES", "SD"];
+
+    var instructions = "Reage com :raised_hand: na mensagem da respetiva cadeira para teres acesso ao seu canal de discussão e receberes notificações dos anúncios dessa cadeira. Para reverter a ação, basta retirar a reação na mensagem correspondente.";
+
     //    -> Create channels
     //    -> Create roles
+
     //    -> Create sign-up messages
-    //    -> React to sign-up messages
+    /*
+    let subscriptionChannel = get_channel(subscriptionChannelID);
+    for(let course of courses) {
+        // console.log(`[${course}]`);
+        let message = await subscriptionChannel.send(`[${course}]`);
+        message.react(roleSelectionEmoji);
+        console.log(`${course}: ${message.id}`);
+    }
 
-    guild = client.guilds.cache.get(guildID);
+    // console.log(instructions);
+    subscriptionChannel.send(instructions);
+    */
+}
 
-    // Fetch sign-up messages
-    const channel_welcome = guild.channels.cache.get(welcomeID);
-    channel_welcome.messages.fetch()
+client.on("ready", async() => {
+    guild = await client.guilds.cache.get(guildID);
+
+    // Fetch subscription messages
+    const subscriptionChannel = get_channel(subscriptionChannelID);
+    subscriptionChannel.messages.fetch()
         .catch(console.error);
 
+    console.log(`Logged in as ${client.user.tag}`);
 });
 
 client.on('messageReactionAdd', async(reaction, user) => {
 
-    // Only process reactions from #welcome
-    if (reaction.message.channel.id !== welcomeID) return;
+    // Only process reactions from subscription channel
+    if (reaction.message.channel.id !== subscriptionChannelID) return;
 
     // Ignore reactions from bots
     if (user.bot) return;
+
 
     // Assign role when the chosen reaction is selected
     if (reaction.emoji.identifier === roleSelectionEmoji) {
@@ -47,15 +70,15 @@ client.on('messageReactionAdd', async(reaction, user) => {
         // Ensures role exists
         if (role_id === undefined) return;
 
-        console.log(`${member.user.username} subscribed to ${guild.roles.cache.get(role_id).name}`);
+        // console.log(`${member.user.username} subscribed to ${guild.roles.cache.get(role_id).name}`);
         member.roles.add(role_id);
     }
 });
 
 client.on('messageReactionRemove', async(reaction, user) => {
 
-    // Only process reactions from #welcome
-    if (reaction.message.channel.id !== welcomeID) return;
+    // Only process reactions from subscription channel
+    if (reaction.message.channel.id !== subscriptionChannelID) return;
 
     // Ignore reactions from bots
     if (user.bot) return;
@@ -74,24 +97,11 @@ client.on('messageReactionRemove', async(reaction, user) => {
 });
 
 client.on('message', msg => {
-    // Only process messages from #bot-commands
-    if (msg.channel.id !== bodCommands_id) return;
+    return;
 
-    // Ignore messages from bots
-    if (msg.author.bot) return;
+    if(msg.author.bot) return; // ignore bot messages
 
-    if (message.content === "!clear") {
-        console.log("CLEARED CHANNEL");
-        async function clear() {
-            message.delete();
-            const fetched = await msg.channel.fetchMessages({ limit: 99 });
-            message.channel.bulkDelete(fetched);
-        }
-        clear();
-    }
-
-    //myLogger('Hello!', welcomeID);
-    console.log(`Got message: ${message.content}`);
+    console.log(`Got message: ${msg.content}`);
 });
 
 client.login(token);
