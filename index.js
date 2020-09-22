@@ -61,6 +61,56 @@ async function setup() {
     
 }
 
+function strip_html(message) {
+
+    // Transform &amp; into &
+    message = message.replace(/&amp;/gi, '&')
+    // Transform &lt; into <
+    message = message.replace(/&lt;/gi, '<')
+    // Transform &#34; into "
+    message = message.replace(/&#34;/gi, '"')
+    // Transform &#39; into '
+    message = message.replace(/&#39;/gi, '\'')
+    // Transform &#61 into @
+    message = message.replace(/&#61;/gi, '=')
+    // Transform &#64 into @
+    message = message.replace(/&#64;/gi, '@')
+    // Transform <br> into newline
+    message = message.replace(/<br[^><\w]*\/?>/gi, '\n')
+    // Transform <i> into italic
+    message = message.replace(/<\/?i[^<>\w]*>/gi, '*')
+    // Transform <b> into bold
+    message = message.replace(/<\/?b[^<>\w]*>/gi, '**')
+    // Transform headings in newlines and spaces
+    message = message.replace(/<h\d?[^<>\w]*>/gi, ' ')
+    message = message.replace(/<\/h\d?[^<>\w]*>/gi, '\n')
+    // Transform some divs into spaces
+    message = message.replace(/<\/div[^<>\w]*>[^\w\n]*<div[^<>\w]*>/gi, '\n')
+    // Avoid multiple whitespace
+    message = message.replace(/\n{3,}/gi, '\n')
+    message = message.replace(/\s{3,}/gi, ' ')
+    message = message.replace(/\n\s*\n/gi, '\n\n')
+
+    // Remove unknown/not needed html entities
+    message = message.replace(/&#\d+;/gi, ' ')
+
+    return message.replace(/<[^<]+?>|\\xa0/gi, '')
+}
+
+function format_feed_entry(entry) {
+
+    const embed = new Discord.MessageEmbed()
+        .setTitle(strip_html(entry.title))
+        .setColor(0xff0000)
+        .setDescription(strip_html(entry.content))
+        .setAuthor(entry.author.replace(/(.*@.* \(|\))/gi, ''))
+        .addField('Anúncio Original', `[Clica aqui](${entry.link})`, false)
+
+    //check_embed_len(embed, ' (...)')
+
+    return embed
+}
+
 client.on("ready", async() => {
     guild = await client.guilds.cache.get(guildID);
 
@@ -73,16 +123,15 @@ client.on("ready", async() => {
 
     var job = new CronJob('*/5 * * * * *', async () => {
  
-        console.log(url);
         let feed = await parser.parseURL(url);
-        console.log(feed.title);
-       
-        feed.items.forEach(item => {
-          console.log(item);
-        });
 
         let testingChannel = get_channel(testing_id);
-        testingChannel.send('<@177142027752964096> enche 10');
+
+        feed.items.forEach(item => {
+
+        testingChannel.send(format_feed_entry(item));
+        });
+
 
     }, null, true);
 
