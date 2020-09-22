@@ -1,6 +1,14 @@
 const Discord = require("discord.js");
 const client = new Discord.Client;
 
+// RSS
+
+var CronJob = require('cron').CronJob;
+let Parser = require('rss-parser');
+let parser = new Parser();
+
+// 
+
 const config = require('./config.json');
 const token = config.token; // Bot Token
 const guildID = config.guildID;
@@ -10,26 +18,37 @@ const roleSelectionEmoji = config.roleSelectionEmoji; // Emoji identifier used f
 const msg_roles = config.msg_roles; // Message ID vs Role ID mapping
 
 var guild;
+var url = 'https://fenix.tecnico.ulisboa.pt/disciplinas/PADI7/2020-2021/1-semestre/rss/announcement';
 
-const testing_id = '756662963188006914';
-const bodCommands_id = '756527548862693396  ';
+const testing_id = '757019523252748351';
+const bodCommands_id = '756527548862693396';
 
 function get_channel(id) {
     return guild.channels.cache.get(id);
 }
+
+async function getAnnouncement(url) {
+ 
+    let feed = await parser.parseURL(url);
+    console.log(feed.title);
+   
+    feed.items.forEach(item => {
+      console.log(item);
+    });
+}
+
 
 // should only run once!
 async function setup() {
     var courses = ["FP", "IAC", "IEI", "AL", "CDI-I", "IAED", "LP", "MD", "CDI-II", "SO", "PO", "ACED", "MO", "Ges", "ASA", "IPM", "TC", "EO", "PE", "BD", "CG", "IA", "OC", "RC", "AMS", "Compiladores", "CS", "ES", "SD"];
 
     var instructions = "Reage com :raised_hand: na mensagem da respetiva cadeira para teres acesso ao seu canal de discussão e receberes notificações dos anúncios dessa cadeira. Para reverter a ação, basta retirar a reação na mensagem correspondente.";
-
     //    -> Create channels
     //    -> Create roles
 
     //    -> Create sign-up messages
-    /*
-    let subscriptionChannel = get_channel(subscriptionChannelID);
+    
+    /*let subscriptionChannel = get_channel(subscriptionChannelID);
     for(let course of courses) {
         // console.log(`[${course}]`);
         let message = await subscriptionChannel.send(`[${course}]`);
@@ -38,8 +57,8 @@ async function setup() {
     }
 
     // console.log(instructions);
-    subscriptionChannel.send(instructions);
-    */
+    subscriptionChannel.send(instructions);*/
+    
 }
 
 client.on("ready", async() => {
@@ -51,7 +70,24 @@ client.on("ready", async() => {
         .catch(console.error);
 
     console.log(`Logged in as ${client.user.tag}`);
-});
+
+    var job = new CronJob('*/5 * * * * *', async () => {
+ 
+        console.log(url);
+        let feed = await parser.parseURL(url);
+        console.log(feed.title);
+       
+        feed.items.forEach(item => {
+          console.log(item);
+        });
+
+        let testingChannel = get_channel(testing_id);
+        testingChannel.send('<@177142027752964096> enche 10');
+
+    }, null, true);
+
+    job.start();
+}); 
 
 client.on('messageReactionAdd', async(reaction, user) => {
 
@@ -70,7 +106,7 @@ client.on('messageReactionAdd', async(reaction, user) => {
         // Ensures role exists
         if (role_id === undefined) return;
 
-        // console.log(`${member.user.username} subscribed to ${guild.roles.cache.get(role_id).name}`);
+        console.log(`${member.user.username} subscribed to ${guild.roles.cache.get(role_id).name}`);
         member.roles.add(role_id);
     }
 });
