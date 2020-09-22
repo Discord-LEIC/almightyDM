@@ -102,7 +102,7 @@ function format_feed_entry(entry) {
     const embed = new Discord.MessageEmbed()
         .setTitle(strip_html(entry.title))
         .setColor(0xff0000)
-        .setDescription(strip_html(entry.content))
+        .setDescription(strip_html(entry.content.substring(0, 2000)))
         .setAuthor(entry.author.replace(/(.*@.* \(|\))/gi, ''))
         .addField('Anúncio Original', `[Clica aqui](${entry.link})`, false)
 
