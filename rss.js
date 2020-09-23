@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+const courses = require('./courses.json')[1];
 
 var CronJob = require('cron').CronJob;
 let Parser = require('rss-parser');
@@ -6,7 +7,6 @@ let parser = new Parser();
 
 const testing_id = '757019523252748351';
 
-var url = 'https://fenix.tecnico.ulisboa.pt/disciplinas/PADI7/2020-2021/1-semestre/rss/announcement';
 var guild;
 
 function get_channel(id) {
@@ -53,7 +53,7 @@ function format_feed_entry(entry) {
 
     const embed = new Discord.MessageEmbed()
         .setTitle(strip_html(entry.title))
-        .setColor(0xff0000)
+        //.setColor(course.color)
         .setDescription(strip_html(entry.content.substring(0, 2000)))
         .setAuthor(entry.author.replace(/(.*@.* \(|\))/gi, ''))
         .addField('Anúncio Original', `[Clica aqui](${entry.link})`, false)
@@ -66,15 +66,21 @@ function format_feed_entry(entry) {
 function start(guildServer) {
     guild = guildServer;
 
-    var job = new CronJob('* */5 * * * *', async () => {
- 
-        let feed = await parser.parseURL(url);
+    var job = new CronJob('*/5 * * * * *', async () => {
 
-        let testingChannel = get_channel(testing_id);
+        for (key in courses) {
+            course = courses[key];
 
-        feed.items.forEach(item => {
-            testingChannel.send(format_feed_entry(item));
-        });
+            if (course.discord_id !== '') {
+                let feed = await parser.parseURL(course.announcements);
+
+                let channel = get_channel(course.discord_id);
+            
+                feed.items.forEach(item => {
+                    channel.send(format_feed_entry(item));
+                });
+            }
+        }
 
     }, null, true);
 
