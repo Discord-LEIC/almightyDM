@@ -86,8 +86,21 @@ function format_feed_entry(course, entry) {
     return embed
 }
 
-function start(guildServer) {
+async function clearChannels() {
+    // Clear channels messages just for testing purposes
+    for (let i = 1; i <= 3; i++) {
+        for (key in courses[i.toString()][currentSemester]) {
+            let channel = get_channel(courses[i][currentSemester][key].discord_id);
+            let messages = await channel.messages.fetch( {limit: 100} );
+            channel.bulkDelete(messages);
+        }
+    }
+}
+
+async function start(guildServer) {
     guild = guildServer;
+
+    await clearChannels();
 
     var job = new CronJob('* */3 * * * *', async () => {
 

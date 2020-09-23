@@ -44,6 +44,7 @@ async function setup() {
 
 client.on("ready", async() => {
     guild = await client.guilds.cache.get(guildID);
+
     // Fetch subscription messages
     const subscriptionChannel = get_channel(subscriptionChannelID);
     subscriptionChannel.messages.fetch()
