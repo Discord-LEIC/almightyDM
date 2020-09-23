@@ -1,244 +1,258 @@
 {
-   "1":{
-      "ACED":{
-         "name":"Análise Complexa e Equações Diferenciais",
-         "acronym":"ACED",
-         "fenix_id":"1408985496305632",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/ACED207/2020-2021/1-semestre/rss/announcement"
+   "1": {
+      "1":{
+         "FP":{
+            "name":"Fundamentos da Programação",
+            "acronym":"FP",
+            "fenix_id":"1408985496305342",
+            "discord_id":"689552896832045104",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/FP45179577/2020-2021/1-semestre/rss/announcement"
+         },
+         "IAC":{
+            "name":"Introdução à Arquitetura de Computadores",
+            "acronym":"IAC",
+            "fenix_id":"1408985496305446",
+            "discord_id":"689817939389448221",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/IAC45179577/2020-2021/1-semestre/rss/announcement"
+         },
+         "AL":{
+            "name":"Álgebra Linear",
+            "acronym":"AL",
+            "fenix_id":"1408985496305200",
+            "discord_id":"689819464241643562",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/AL425179577/2020-2021/1-semestre/rss/announcement"
+         },
+         "CDI-I":{
+            "name":"Cálculo Diferencial e Integral I",
+            "acronym":"CDI-I",
+            "fenix_id":"1408985496305201",
+            "discord_id":"689818371201564778",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/CDI925179577/2020-2021/1-semestre/rss/announcement"
+         },
+         "IEI":{
+            "name":"Introdução à Engenharia Informática",
+            "acronym":"IEI",
+            "fenix_id":"1408985496305104",
+            "discord_id":"689992671955386369",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/IEI7179577/2020-2021/1-semestre/rss/announcement"
+         }
       },
-      "OC":{
-         "name":"Organização de Computadores",
-         "acronym":"OC",
-         "fenix_id":"1408985496305453",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/OC11179577/2020-2021/1-semestre/rss/announcement"
-      },
-      "AL":{
-         "name":"Álgebra Linear",
-         "acronym":"AL",
-         "fenix_id":"1408985496305200",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/AL425179577/2020-2021/1-semestre/rss/announcement"
-      },
-      "FP":{
-         "name":"Fundamentos da Programação",
-         "acronym":"FP",
-         "fenix_id":"1408985496305342",
-         "discord_id":"689552896832045104",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/FP45179577/2020-2021/1-semestre/rss/announcement"
-      },
-      "PE":{
-         "name":"Probabilidades e Estatística",
-         "acronym":"PE",
-         "fenix_id":"1408985496305406",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/PEst2445179577/2020-2021/1-semestre/rss/announcement"
-      },
-      "IAC":{
-         "name":"Introdução à Arquitetura de Computadores",
-         "acronym":"IAC",
-         "fenix_id":"1408985496305446",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/IAC45179577/2020-2021/1-semestre/rss/announcement"
-      },
-      "CDI-I":{
-         "name":"Cálculo Diferencial e Integral I",
-         "acronym":"CDI-I",
-         "fenix_id":"1408985496305201",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/CDI925179577/2020-2021/1-semestre/rss/announcement"
-      },
-      "Ges":{
-         "name":"Gestão",
-         "acronym":"Ges",
-         "fenix_id":"1408985496305335",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/Ges55179577/2020-2021/1-semestre/rss/announcement"
-      },
-      "CDI-II":{
-         "name":"Cálculo Diferencial e Integral II",
-         "acronym":"CDI-II",
-         "fenix_id":"1408985496305013",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/CDI287/2020-2021/1-semestre/rss/announcement"
-      },
-      "IA":{
-         "name":"Inteligência Artificial",
-         "acronym":"IA",
-         "fenix_id":"1408985496305320",
-         "discord_id":"756923092109885440",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/IArt45179577/2020-2021/1-semestre/rss/announcement"
-      },
-      "SO":{
-         "name":"Sistemas Operativos",
-         "acronym":"SO",
-         "fenix_id":"1408985496305227",
-         "discord_id":"756904679912374333",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/SO45179577/2020-2021/1-semestre/rss/announcement"
-      },
-      "MO":{
-         "name":"Mecânica e Ondas",
-         "acronym":"MO",
-         "fenix_id":"1408985496305447",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/MO65179577/2020-2021/1-semestre/rss/announcement"
-      },
-      "CG":{
-         "name":"Computação Gráfica",
-         "acronym":"CG",
-         "fenix_id":"1408985496305448",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/CGra45179577/2020-2021/1-semestre/rss/announcement"
-      },
-      "RC":{
-         "name":"Redes de Computadores",
-         "acronym":"RC",
-         "fenix_id":"1408985496305239",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/RC45179577/2020-2021/1-semestre/rss/announcement"
-      },
-      "BD":{
-         "name":"Bases de Dados",
-         "acronym":"BD",
-         "fenix_id":"1408985496305236",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/BD225179577/2020-2021/1-semestre/rss/announcement"
-      },
-      "PO":{
-         "name":"Programação com Objectos",
-         "acronym":"PO",
-         "fenix_id":"1408985496305260",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/PO65179577/2020-2021/1-semestre/rss/announcement"
-      },
-      "IEI":{
-         "name":"Introdução à Engenharia Informática",
-         "acronym":"IEI",
-         "fenix_id":"1408985496305104",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/IEI7179577/2020-2021/1-semestre/rss/announcement"
+      "2":{
+         "IAED":{
+            "name":"Introdução aos Algoritmos e Estruturas de Dados",
+            "acronym":"IAED",
+            "fenix_id":"564560566180998",
+            "discord_id":"756900131248275476",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/IAED76451113264/2020-2021/2-semestre/rss/announcement"
+         },
+         "LP":{
+            "name":"Lógica para Programação",
+            "acronym":"LP",
+            "fenix_id":"564560566180897",
+            "discord_id":"756899803899887756",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/LP56451113264/2020-2021/2-semestre/rss/announcement"
+         },
+         "MD":{
+            "name":"Matemática Discreta",
+            "acronym":"MD",
+            "fenix_id":"564560566180909",
+            "discord_id":"756901898124001312",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/MD56451113264/2020-2021/2-semestre/rss/announcement"
+         },
+         "CDI-II":{
+            "name":"Cálculo Diferencial e Integral II",
+            "acronym":"CDI-II",
+            "fenix_id":"564560566180740",
+            "discord_id":"756899405621100546",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/CDI142101113264/2020-2021/2-semestre/rss/announcement"
+         },
+         "AL":{
+            "name":"Álgebra Linear",
+            "acronym":"AL",
+            "fenix_id":"564560566180484",
+            "discord_id":"689819464241643562",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/AL4/2020-2021/2-semestre/rss/announcement"
+         },
+         "CDI-I":{
+            "name":"Cálculo Diferencial e Integral I",
+            "acronym":"CDI-I",
+            "fenix_id":"564560566180741",
+            "discord_id":"689818371201564778",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/CDI14151113264/2020-2021/2-semestre/rss/announcement"
+         }
       }
    },
-   "2":{
-      "PE":{
-         "name":"Probabilidades e Estatística/Introdução às Probabilidades e Estatística",
-         "acronym":"PE",
-         "fenix_id":"564560566180787",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/PEst36451113264/2020-2021/2-semestre/rss/announcement"
+   "2": {
+      "1":{
+         "SO":{
+            "name":"Sistemas Operativos",
+            "acronym":"SO",
+            "fenix_id":"1408985496305227",
+            "discord_id":"756904679912374333",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/SO45179577/2020-2021/1-semestre/rss/announcement"
+         },
+         "PO":{
+            "name":"Programação com Objectos",
+            "acronym":"PO",
+            "fenix_id":"1408985496305260",
+            "discord_id":"756904596160380938",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/PO65179577/2020-2021/1-semestre/rss/announcement"
+         },
+         "CDI-II":{
+            "name":"Cálculo Diferencial e Integral II",
+            "acronym":"CDI-II",
+            "fenix_id":"1408985496305013",
+            "discord_id":"756899405621100546",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/CDI287/2020-2021/1-semestre/rss/announcement"
+         },
+         "ACED":{
+            "name":"Análise Complexa e Equações Diferenciais",
+            "acronym":"ACED",
+            "fenix_id":"1408985496305632",
+            "discord_id":"756902259132071968",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/ACED207/2020-2021/1-semestre/rss/announcement"
+         },
+         "PE":{
+            "name":"Probabilidades e Estatística",
+            "acronym":"PE",
+            "fenix_id":"1408985496305406",
+            "discord_id":"756922573400440901",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/PEst2445179577/2020-2021/1-semestre/rss/announcement"
+         },
+         "MO":{
+            "name":"Mecânica e Ondas",
+            "acronym":"MO",
+            "fenix_id":"1408985496305447",
+            "discord_id":"756904462479655066",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/MO65179577/2020-2021/1-semestre/rss/announcement"
+         },
+         "Ges":{
+            "name":"Gestão",
+            "acronym":"Ges",
+            "fenix_id":"1408985496305335",
+            "discord_id":"756904316383789087",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/Ges55179577/2020-2021/1-semestre/rss/announcement"
+         }
       },
-      "CDI-II":{
-         "name":"Cálculo Diferencial e Integral II",
-         "acronym":"CDI-II",
-         "fenix_id":"564560566180740",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/CDI142101113264/2020-2021/2-semestre/rss/announcement"
+      "2":{
+         "ASA":{
+            "name":"Análise e Síntese de Algoritmos",
+            "acronym":"ASA",
+            "fenix_id":"564560566180817",
+            "discord_id":"756922300535930980",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/ASA76451113264/2020-2021/2-semestre/rss/announcement"
+         },
+         "IPM":{
+            "name":"Interfaces Pessoa Máquina",
+            "acronym":"IPM",
+            "fenix_id":"564560566181110",
+            "discord_id":"756922520032247809",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/IPM201113264/2020-2021/2-semestre/rss/announcement"
+         },
+         "TC":{
+            "name":"Teoria da Computação",
+            "acronym":"TC",
+            "fenix_id":"564560566181093",
+            "discord_id":"756922692870996051",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/TCom51113264/2020-2021/2-semestre/rss/announcement"
+         },
+         "EO":{
+            "name":"Electromagnetismo e Óptica",
+            "acronym":"EO",
+            "fenix_id":"564560566181094",
+            "discord_id":"756922360656953466",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/EO101113264/2020-2021/2-semestre/rss/announcement"
+         },
+         "ACED":{
+            "name":"Análise Complexa e Equações Diferenciais",
+            "acronym":"ACED",
+            "fenix_id":"564560566180753",
+            "discord_id":"756902259132071968",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/ACED5851113264/2020-2021/2-semestre/rss/announcement"
+         },
+         "PE":{
+            "name":"Probabilidades e Estatística/Introdução às Probabilidades e Estatística",
+            "acronym":"PE",
+            "fenix_id":"564560566180787",
+            "discord_id":"756922573400440901",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/PEst36451113264/2020-2021/2-semestre/rss/announcement"
+         }
+      }
+   },
+   "3": {
+      "1":{
+         "RC":{
+            "name":"Redes de Computadores",
+            "acronym":"RC",
+            "fenix_id":"1408985496305239",
+            "discord_id":"756923360881016857",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/RC45179577/2020-2021/1-semestre/rss/announcement"
+         },
+         "OC":{
+            "name":"Organização de Computadores",
+            "acronym":"OC",
+            "fenix_id":"1408985496305453",
+            "discord_id":"756923166684741682",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/OC11179577/2020-2021/1-semestre/rss/announcement"
+         },
+         "IA":{
+            "name":"Inteligência Artificial",
+            "acronym":"IA",
+            "fenix_id":"1408985496305320",
+            "discord_id":"756923092109885440",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/IArt45179577/2020-2021/1-semestre/rss/announcement"
+         },
+         "BD":{
+            "name":"Bases de Dados",
+            "acronym":"BD",
+            "fenix_id":"1408985496305236",
+            "discord_id":"756922908655353896",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/BD225179577/2020-2021/1-semestre/rss/announcement"
+         },
+         "CG":{
+            "name":"Computação Gráfica",
+            "acronym":"CG",
+            "fenix_id":"1408985496305448",
+            "discord_id":"756922981141315594",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/CGra45179577/2020-2021/1-semestre/rss/announcement"
+         }
       },
-      "Compiladores":{
-         "name":"Compiladores",
-         "acronym":"Compiladores",
-         "fenix_id":"564560566180482",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/Com56451113264/2020-2021/2-semestre/rss/announcement"
-      },
-      "ACED":{
-         "name":"Análise Complexa e Equações Diferenciais",
-         "acronym":"ACED",
-         "fenix_id":"564560566180753",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/ACED5851113264/2020-2021/2-semestre/rss/announcement"
-      },
-      "AMS":{
-         "name":"Análise e Modelação de Sistemas",
-         "acronym":"AMS",
-         "fenix_id":"564560566181054",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/AMS1113264/2020-2021/2-semestre/rss/announcement"
-      },
-      "MD":{
-         "name":"Matemática Discreta",
-         "acronym":"MD",
-         "fenix_id":"564560566180909",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/MD56451113264/2020-2021/2-semestre/rss/announcement"
-      },
-      "TC":{
-         "name":"Teoria da Computação",
-         "acronym":"TC",
-         "fenix_id":"564560566181093",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/TCom51113264/2020-2021/2-semestre/rss/announcement"
-      },
-      "CDI-I":{
-         "name":"Cálculo Diferencial e Integral I",
-         "acronym":"CDI-I",
-         "fenix_id":"564560566180741",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/CDI14151113264/2020-2021/2-semestre/rss/announcement"
-      },
-      "LP":{
-         "name":"Lógica para Programação",
-         "acronym":"LP",
-         "fenix_id":"564560566180897",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/LP56451113264/2020-2021/2-semestre/rss/announcement"
-      },
-      "CS":{
-         "name":"Computação e Sociedade",
-         "acronym":"CS",
-         "fenix_id":"564560566181058",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/CS1113264/2020-2021/2-semestre/rss/announcement"
-      },
-      "ES":{
-         "name":"Engenharia de Software",
-         "acronym":"ES",
-         "fenix_id":"564560566180866",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/ESof96451113264/2020-2021/2-semestre/rss/announcement"
-      },
-      "ASA":{
-         "name":"Análise e Síntese de Algoritmos",
-         "acronym":"ASA",
-         "fenix_id":"564560566180817",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/ASA76451113264/2020-2021/2-semestre/rss/announcement"
-      },
-      "IAED":{
-         "name":"Introdução aos Algoritmos e Estruturas de Dados",
-         "acronym":"IAED",
-         "fenix_id":"564560566180998",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/IAED76451113264/2020-2021/2-semestre/rss/announcement"
-      },
-      "IPM":{
-         "name":"Interfaces Pessoa Máquina",
-         "acronym":"IPM",
-         "fenix_id":"564560566181110",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/IPM201113264/2020-2021/2-semestre/rss/announcement"
-      },
-      "SD":{
-         "name":"Sistemas Distribuídos",
-         "acronym":"SD",
-         "fenix_id":"564560566180770",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/SDis126451113264/2020-2021/2-semestre/rss/announcement"
-      },
-      "EO":{
-         "name":"Electromagnetismo e Óptica",
-         "acronym":"EO",
-         "fenix_id":"564560566181094",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/EO101113264/2020-2021/2-semestre/rss/announcement"
-      },
-      "AL":{
-         "name":"Álgebra Linear",
-         "acronym":"AL",
-         "fenix_id":"564560566180484",
-         "discord_id":"",
-         "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/AL4/2020-2021/2-semestre/rss/announcement"
+      "2":{
+         "Compiladores":{
+            "name":"Compiladores",
+            "acronym":"Compiladores",
+            "fenix_id":"564560566180482",
+            "discord_id":"756923566137671720",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/Com56451113264/2020-2021/2-semestre/rss/announcement"
+         },
+         "SD":{
+            "name":"Sistemas Distribuídos",
+            "acronym":"SD",
+            "fenix_id":"564560566180770",
+            "discord_id":"756923798120300544",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/SDis126451113264/2020-2021/2-semestre/rss/announcement"
+         },
+         "ES":{
+            "name":"Engenharia de Software",
+            "acronym":"ES",
+            "fenix_id":"564560566180866",
+            "discord_id":"756923752306180116",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/ESof96451113264/2020-2021/2-semestre/rss/announcement"
+         },
+         "AMS":{
+            "name":"Análise e Modelação de Sistemas",
+            "acronym":"AMS",
+            "fenix_id":"564560566181054",
+            "discord_id":"756923442175016960",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/AMS1113264/2020-2021/2-semestre/rss/announcement"
+         },
+         "CS":{
+            "name":"Computação e Sociedade",
+            "acronym":"CS",
+            "fenix_id":"564560566181058",
+            "discord_id":"756923634374803498",
+            "announcements":"https://fenix.tecnico.ulisboa.pt/disciplinas/CS1113264/2020-2021/2-semestre/rss/announcement"
+         }
       }
    }
 }
