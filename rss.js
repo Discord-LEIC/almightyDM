@@ -15,7 +15,7 @@ function get_channel(id) {
     return guild.channels.cache.get(id);
 }
 
-function strip_html(message) {
+async function strip_html(message) {
 
     // Transform &amp; into &
     message = message.replace(/&amp;/gi, '&')
@@ -51,7 +51,7 @@ function strip_html(message) {
     return message.replace(/<[^<]+?>|\\xa0/gi, '')
 }
 
-function formatDate(date) {
+async function formatDate(date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
@@ -71,12 +71,12 @@ function formatDate(date) {
     return `_${day}-${month}-${year} ${hour}:${min}_\n\n`;
 }
 
-function format_feed_entry(course, entry) {
+async function format_feed_entry(course, entry) {
 
     const embed = new Discord.MessageEmbed()
-        .setTitle(`[${course.acronym}] ${strip_html(entry.title)}`)
+        .setTitle(`[${course.acronym}] ${await strip_html(entry.title)}`)
         //.setColor(course.color)
-        .setDescription(formatDate(entry.pubDate) + strip_html(entry.content.substring(0, 2000)))
+        .setDescription(await formatDate(entry.pubDate) + await strip_html(entry.content.substring(0, 2000)))
         .setURL(entry.guid)
         .setAuthor(entry.author.replace(/(.*@.* \(|\))/gi, ''), `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png`)
         .addField('Anúncio Original', `[Clica aqui](${entry.guid})`, false)
@@ -86,23 +86,10 @@ function format_feed_entry(course, entry) {
     return embed
 }
 
-async function clearChannels() {
-    // Clear channels messages just for testing purposes
-    for (let i = 1; i <= 3; i++) {
-        for (key in courses[i.toString()][currentSemester]) {
-            let channel = get_channel(courses[i][currentSemester][key].discord_id);
-            let messages = await channel.messages.fetch( {limit: 100} );
-            channel.bulkDelete(messages);
-        }
-    }
-}
-
 async function start(guildServer) {
     guild = guildServer;
 
-    await clearChannels();
-
-    var job = new CronJob('* */3 * * * *', async () => {
+    var job = new CronJob('*/5 * * * * *', async () => {
 
         for (key in courses[(tmpYear+1).toString()][currentSemester]) {
             course = courses[(tmpYear+1).toString()][currentSemester][key];
@@ -123,7 +110,7 @@ async function start(guildServer) {
             .catch(console.error);
                 
             for (let i = index - 1; i >= 0; i--) {
-                channel.send(format_feed_entry(course, feed.items[i]));
+                channel.send(await format_feed_entry(course, feed.items[i]));
             }
         }
         tmpYear = (tmpYear + 1) % 3;

@@ -1,0 +1,19 @@
+var guild;
+
+function get_channel(id) {
+    return guild.channels.cache.get(id);
+}
+
+module.exports = {
+	name: 'clear',
+    description: 'Clear all announcements for specific channel',
+    usage: '$$$clear <channel_id>',
+	async execute(message, guildServer, args) {
+        guild = guildServer;
+
+        let channel = get_channel(args[0].slice(2,).slice(0,-1));
+        let messages = await channel.messages.fetch( {limit: 100} );
+        channel.bulkDelete(messages);
+        console.log(`Cleaning all announcements for channel ${channel.name}`);
+	},
+};
