@@ -12,6 +12,7 @@
     "dependencies": {
         "cron": "^1.8.2",
         "discord.js": "^12.3.1",
-        "rss-parser": "^3.9.0"
+        "rss-parser": "^3.9.0",
+        "xmlhttprequest": "^1.8.0"
     }
 }
