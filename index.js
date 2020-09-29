@@ -6,10 +6,13 @@ client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 const rss = require('./rss');
+const setup = require('./setup');
 
 const config = require('./config.json');
-const { prefix, token } = require('./config.json');
+const { prefix } = require('./config.json');
 const guildID = config.guildID;
+
+const token = process.env.DISCORD_TOKEN;
 
 const subscriptionChannelID = config.channels.subscribe; // #welcome channel ID (this is monitored for reactions)
 const roleSelectionEmoji = config.roleSelectionEmoji; // Emoji identifier used for role assignment
@@ -24,30 +27,34 @@ function get_channel(id) {
     return guild.channels.cache.get(id);
 }
 
-// should only run once!
-async function setup() {
-    var courses = ["FP", "IAC", "IEI", "AL", "CDI-I", "IAED", "LP", "MD", "CDI-II", "SO", "PO", "ACED", "MO", "Ges", "ASA", "IPM", "TC", "EO", "PE", "BD", "CG", "IA", "OC", "RC", "AMS", "Compiladores", "CS", "ES", "SD"];
-
-    var instructions = "Reage com :raised_hand: na mensagem da respetiva cadeira para teres acesso ao seu canal de discussão e receberes notificações dos anúncios dessa cadeira. Para reverter a ação, basta retirar a reação na mensagem correspondente.";
-    //    -> Create channels
-    //    -> Create roles
-
-    //    -> Create sign-up messages
-    
-    /*let subscriptionChannel = get_channel(subscriptionChannelID);
-    for(let course of courses) {
-        // console.log(`[${course}]`);
-        let message = await subscriptionChannel.send(`[${course}]`);
-        message.react(roleSelectionEmoji);
-        console.log(`${course}: ${message.id}`);
-    }
-
-    // console.log(instructions);
-    subscriptionChannel.send(instructions);*/
-    
-}
 
 client.on("ready", async() => {
+
+
+    // TODO: REMOVE THIS
+
+    guild = await client.guilds.cache.get('760532132924751935');
+
+    guild.channels.cache.forEach(channel => {
+        console.log(`Deleting ${channel.name}`);
+        channel.delete()
+    });
+
+    guild.roles.cache.forEach(role => {
+        console.log(`Deleting role ${role.name}`);
+        role.delete()
+            .catch(console.error)
+    });
+
+    // await setup.setup_server(guild);
+
+    process.exit(0);
+
+
+
+
+    // TODO: END REMOVE
+
     guild = await client.guilds.cache.get(guildID);
 
     // Fetch subscription messages
@@ -66,6 +73,8 @@ client.on("ready", async() => {
 }); 
 
 client.on('messageReactionAdd', async(reaction, user) => {
+
+    return;
 
     // Only process reactions from subscription channel
     if (reaction.message.channel.id !== subscriptionChannelID) return;
@@ -89,6 +98,8 @@ client.on('messageReactionAdd', async(reaction, user) => {
 
 client.on('messageReactionRemove', async(reaction, user) => {
 
+    return;
+
     // Only process reactions from subscription channel
     if (reaction.message.channel.id !== subscriptionChannelID) return;
 
@@ -109,6 +120,9 @@ client.on('messageReactionRemove', async(reaction, user) => {
 });
 
 client.on('message', message => {
+
+    return;
+
     if (!message.content.startsWith(prefix) || message.channel.id != 760244020915732501 || !message.member.roles._roles.has("689586433232863308") || message.author.bot) return;
 
 	const args = message.content.slice(prefix.length).trim().split(/ +/);
