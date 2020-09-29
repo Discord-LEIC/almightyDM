@@ -11,7 +11,7 @@ module.exports = {
 	name: 'clearall',
     description: 'Clear all announcements channels messages',
     usage: '$$$clearAll',
-	async execute(message, guildServer, args) {
+	async execute(client, guildServer, args) {
         guild = guildServer;
 
 		for (let i = 1; i <= 3; i++) {
@@ -21,6 +21,9 @@ module.exports = {
                 channel.bulkDelete(messages);
             }
         }
+
+        channel = get_channel("760244020915732501");
+        channel.send("Cleared all announcements channels");
         console.log("Cleaning all announcements channels");
 	},
 };

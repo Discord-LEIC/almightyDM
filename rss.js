@@ -89,11 +89,11 @@ async function format_feed_entry(course, entry) {
 async function start(guildServer) {
     guild = guildServer;
 
-    var job = new CronJob('*/5 * * * * *', async () => {
+    var job = new CronJob('00 */3 * * * *', async () => {
 
         for (key in courses[(tmpYear+1).toString()][currentSemester]) {
             course = courses[(tmpYear+1).toString()][currentSemester][key];
-            let feed = await parser.parseURL(course.announcements);
+            let feed = await parser.parseURL(course.announcements).catch(console.error);
             feed.items.sort((a, b) => {
                 return (new Date(b.pubDate)).getTime() - (new Date(a.pubDate)).getTime();
             });
