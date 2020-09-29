@@ -1,5 +1,4 @@
-const courses = require('../courses.json');
-var currentSemester = "1";
+const courses = require('../beta_courses.json');
 
 var guild;
 
@@ -13,16 +12,16 @@ module.exports = {
     usage: '$$$clearAll',
 	async execute(client, guildServer, args) {
         guild = guildServer;
-
-		for (let i = 1; i <= 3; i++) {
-            for (key in courses[i.toString()][currentSemester]) {
-                let channel = get_channel(courses[i][currentSemester][key].discord_id);
+        
+        for (campus in courses) {
+            for (key in courses[campus]) {
+                let channel = get_channel(courses[campus][key].announcements.slice(2,).slice(0,-1));
                 let messages = await channel.messages.fetch( {limit: 100} );
                 channel.bulkDelete(messages);
             }
         }
 
-        channel = get_channel("760244020915732501");
+        channel = get_channel("760601249023655987");
         channel.send("Cleared all announcements channels");
         console.log("Cleaning all announcements channels");
 	},

@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const courses = require('./courses.json');
+const courses = require('./beta_courses.json');
 
 var CronJob = require('cron').CronJob;
 let Parser = require('rss-parser');
@@ -8,8 +8,6 @@ let parser = new Parser();
 const testing_id = '757019523252748351';
 
 var guild;
-var currentSemester = "1";
-var tmpYear = 0;
 
 function get_channel(id) {
     return guild.channels.cache.get(id);
@@ -89,32 +87,33 @@ async function format_feed_entry(course, entry) {
 async function start(guildServer) {
     guild = guildServer;
 
-    var job = new CronJob('00 */3 * * * *', async () => {
+    var job = new CronJob('*/30 * * * * *', async () => {
 
-        for (key in courses[(tmpYear+1).toString()][currentSemester]) {
-            course = courses[(tmpYear+1).toString()][currentSemester][key];
-            let feed = await parser.parseURL(course.announcements).catch(console.error);
-            feed.items.sort((a, b) => {
-                return (new Date(b.pubDate)).getTime() - (new Date(a.pubDate)).getTime();
-            });
+        for (campus in courses) {
+            for (key in courses[campus]) {
+                course = courses[campus][key];
+
+                let feed = await parser.parseURL(course.rss).catch(console.error);
+                feed.items.sort((a, b) => {
+                    return (new Date(b.pubDate)).getTime() - (new Date(a.pubDate)).getTime();
+                });
                 
-            let channel = get_channel(course.discord_id);
+                let channel = get_channel(course.announcements.slice(2,).slice(0,-1));
                 
-            let index = feed.items.length; 
-            await channel.messages.fetch({ limit: 1 }).then(messages => {
-                if (messages.first() !== undefined) {
-                    let lastMessageUrl = messages.first().embeds[0].url;
-                    index = feed.items.findIndex(item => { return item.guid.toString() === lastMessageUrl.toString(); });    
+                let index = feed.items.length; 
+                await channel.messages.fetch({ limit: 1 }).then(messages => {
+                    if (messages.first() !== undefined) {
+                        let lastMessageUrl = messages.first().embeds[0].url;
+                        index = feed.items.findIndex(item => { return item.guid.toString() === lastMessageUrl.toString(); });    
+                    }
+                })
+                .catch(console.error);
+                
+                for (let i = index - 1; i >= 0; i--) {
+                    channel.send(await format_feed_entry(course, feed.items[i]));
                 }
-            })
-            .catch(console.error);
-                
-            for (let i = index - 1; i >= 0; i--) {
-                channel.send(await format_feed_entry(course, feed.items[i]));
-            }
+            }            
         }
-        tmpYear = (tmpYear + 1) % 3;
-
     }, null, true);
 
     job.start();

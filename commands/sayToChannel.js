@@ -20,7 +20,7 @@ module.exports = {
 
         channel.send(message);
 
-        let channel2 = get_channel("760244020915732501");
+        let channel2 = get_channel("760601249023655987");
         channel2.send(`Message sent to channel ${channel.name}`);
         console.log(`Sending a message to channel ${channel.name}`);
 	},

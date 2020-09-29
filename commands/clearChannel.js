@@ -15,7 +15,7 @@ module.exports = {
         let messages = await channel.messages.fetch( {limit: 100} );
         channel.bulkDelete(messages);
 
-        let channel2 = get_channel("760244020915732501");
+        let channel2 = get_channel("760601249023655987");
         channel2.send(`Cleared all announcements for channel ${channel.name}`);
         console.log(`Cleaning all announcements for channel ${channel.name}`);
 	},
