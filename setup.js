@@ -27,8 +27,18 @@ function setup_server() {
 
 
     // TODO: generate section Welcome
+    let welcomeSectionId = Math.floor(Math.random() * 1000000);
+    console.log(`[+] Generating welcome section with id ${welcomeSectionId}`);
+
     // TODO: generate #welcome
+    let welcomeChannelId = Math.floor(Math.random() * 1000000);
+    let welcomeChannelName = "welcome";
+    console.log(`[+] Generating channel ${welcomeChannelName} with id ${welcomeChannelId}`);
+
     // TODO: generate #rules
+    let rulesChannelId = Math.floor(Math.random() * 1000000);
+    console.log(`[+] Generating welcome section with id ${welcomeSectionId}`);
+
     // TODO: generate #enroll-campi
 
     // TODO: generate section Course Announcements
