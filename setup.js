@@ -1,4 +1,5 @@
-// const https = require('https');
+const { Guild } = require("discord.js");
+
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 let GET_DEGREES_URL = "https://fenix.tecnico.ulisboa.pt/api/fenix/v1/degrees"
@@ -18,26 +19,52 @@ let excludedCourses = [
 // config objects
 let enrollment_mappings = {}
 
-
 let roles = {}
 
+//const guildID = config.guildID;
 
 function setup_server() {
     // TODO: CLEAR SERVER SETTINGS
-
+    let serverGuild = get_guild();
 
     // TODO: generate section Welcome
+    let welcomeID = Math.floor(Math.random() * 100000000);
+    create_channel(serverGuild, 'Welcome', welcomeID, 'category',  [{deny: ['SEND_MESSAGES']}]);
+    console.log(`[+] Creating category Welcome with id ${welcomeID}`);
+
     // TODO: generate #welcome
+    let welcomeTextID = Math.floor(Math.random() * 100000000);
+    create_channel(serverGuild, 'welcome', welcomeTextID, 'text',  [{deny: ['SEND_MESSAGES']}]);
+    console.log(`[+] Creating text channel welcome with id ${welcomeTextID}`);
+
     // TODO: generate #rules
-    // TODO: generate #enroll-campi
+    let rulesTextID = Math.floor(Math.random() * 100000000);
+    create_channel(serverGuild, 'rules', rulesTextID, 'text',  [{deny: ['SEND_MESSAGES']}]);
+    console.log(`[+] Creating text channel rules with id ${rulesTextID}`);
+
+    // TODO: generate #enroll-degree
+    let degreeTextID = Math.floor(Math.random() * 100000000);
+    create_channel(serverGuild, 'enroll-degree', degreeTextID, 'text',  [{deny: ['SEND_MESSAGES']}]);
+    console.log(`[+] Creating text channel enroll-degree with id ${degreeTextID}`);
+
+    // TODO: generate #enroll-year
+    let yearTextID = Math.floor(Math.random() * 100000000);
+    create_channel(serverGuild, 'enroll-year', yearTextID, 'text',  [{deny: ['SEND_MESSAGES']}]);
+    console.log(`[+] Creating text channel enroll-year with id ${yearTextID}`);
 
     // TODO: generate section Course Announcements
+    let announcementsID = Math.floor(Math.random() * 100000000);
+    create_channel(serverGuild, 'Announcements',announcementsID, 'category',  [{deny: ['SEND_MESSAGES']}]);
+    console.log(`[+] Creating category Announcements with id ${announcementsID}`);
+
     // TODO: generate section Course Discussion
+    let discussionID = Math.floor(Math.random() * 100000000);
+    create_channel(serverGuild, 'Discussion', discussionID, 'category',  [{deny: ['SEND_MESSAGES']}]);
+    console.log(`[+] Creating category Announcements with id ${discussionID}`);
 
     // get courses
     let degrees = get_degrees(targets);
     for(const degree of degrees) {
-
 
         // TODO: generate degree role (LEIC-A, LEIC-T, MEIC)
         let rolename = degree.acronym === 'MEIC-A' ? 'MEIC' : degree.acronym;
@@ -87,6 +114,21 @@ function setup_server() {
     }
 
     // console.log(courses);
+}
+
+function create_channel(serverGuild, name, id, type, pOverwrite){
+    return;
+    serverGuild.channels.create(name, {
+        id: id,
+        type: type,
+        permissionOverwrites: pOverwrite
+    })
+    .then(console.log)
+    .catch(console.error);
+}
+
+function get_guild(){
+    return;
 }
 
 function get_degree_letter(degree_name) {
