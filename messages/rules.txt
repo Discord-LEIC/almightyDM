@@ -1,0 +1,38 @@
+[EN]
+RULES (read carefully)
+0. Be respectful and mindful of others, both in tone and in content. To keep things running smoothly, keep your discussions within the appropriate channels and don’t overstep personal boundaries, especially when conflict may arise. 
+
+1. Change your nickname to something others can recognize as you (e.g <firstname> <lastname>)
+
+2. Use course channel mentions (#<course name>) instead of general ones (@everyone/@here/…). If you need Staff to help with something, @staff or a DM will do (don’t spam this).
+
+3. If there are non-portuguese speakers in a channel, please use english.
+
+4. Respect the Staff and their decisions. A lot of situations will be outside the scope of these rules and so they will be constantly dealing with all sorts of complicated situations.
+
+5. Enjoy your stay! :)
+
+Acronyms
+aa - Alameda announcements
+ad - Alameda discussion
+ta - Tagus announcements
+td - Tagus announcements
+[PT]
+REGRAS (lê com atenção)
+0. Respeita os outros alunos, tanto na forma como falas como no que dizes. Para manter as coisas organizadas, mantém as discussões nos canais apropriados e não passes por cima dos limites pessoais de cada um, especialmente em eventuais discussões.
+
+1. Muda o teu nome para algo reconhecível (<primeiro> <último>)
+
+2. Use os mentions para cada cadeira (#<nome da cadeira>) em vez de mentions gerais (@everyone/@here/…). Se precisares da ajuda de um membro do Staff, @staff ou uma mp funciona (não spamem).
+
+3. Se houver alguém não português num canal, falem inglês de preferência.
+
+4. Respeita o Staff e as suas decisões. Muitas situações vão estar fora das regras aqui descritas portanto os membros do Staff vão estar constantemente a servir de suporte de problemas, a resolver situações complicadas.
+
+5. Enjoy your stay! :)
+
+Acrónimos
+aa - Alameda anúncios
+ad - Alameda discussão
+ta - Tagus anúncios
+td - Tagus discussão

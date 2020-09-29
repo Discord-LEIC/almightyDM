@@ -1,0 +1,28 @@
+[EN]
+Welcome to LEIC’s official Discord [Beta]!
+
+This Discord Server is a collaborative effort to allow all LEIC students to interact and engage with each other in a single server. Besides interaction, this server has useful features such as discussion and announcement channels for each course you are taking. The latter directly fetches all announcements from Fénix and sends a notification your way.
+
+DISCLAIMER: This Server is in Open Beta. For now, only 1st year students are present here. Sometime in the future this server will suffer an update that will allow every LEIC/MEIC student to join. The structure will remain the same, the only difference is that more people will be present (in the appropriate channels). Also, congratulations on making it here, the hard part is yet to come.
+
+Before doing anything, please carefully read the #rules channel below.
+
+Instructions
+1. First and foremost, enroll in your correct degree in the #enroll-degree channel. Use :raised_hand: to respond to the appropriate message. You will gain a role corresponding to your degree (LEIC-A, LEIC-T). LEIC-A and LEIC-T are mutually exclusive roles.
+
+2. This setup being complete, you should have access to every content this server has to offer. If any roles get misassigned, please contact @staff.
+[PT]
+
+Bem-vindo ao Discord oficial de LEIC [Beta]!
+
+Este Discord é um esforço coletivo para permitir a todos os alunos de LEIC interagirem e falarem uns com os outros todos no mesmo servidor. Para além disso, o servidor tem funcionalidades úteis, como canais de discussão e de anúncios para cada cadeira. Estes últimos permitem tirar todos os anúncios diretamente do Fénix e mandar-te uma notificação.
+
+AVISO: Este servidor está em Open Beta. Por agora só alunos do 1º ano é que estão aqui presentes. Algures num futuro próximo este servidor vai receber um update que vai permitir a todos os alunos de LEIC/MEIC juntarem-se. A estrutura ficará igual, a única diferença é que estarão presentes mais pessoas (nos canais apropriados). Muitos parabéns por teres chegado até aqui, o mais difícil está para vir.
+
+Antes de fazeres qualquer outra coisa, lê o canal de #rules em baixo.
+
+Instruções
+
+1. Primeiro que tudo, inscreve-te no curso correcto no canal #enroll-degree. Usa :raised_hand: para responder à mensagem apropriada. Vais ganhar uma role que corresponde ao teu curso (LEIC-A, LEIC-T). LEIC-A e LEIC-T são mutuamente exclusivos.
+
+2. Estando este passo cumprido, deves ter acesso a todos os canais que tens direito. Se alguma coisa correr mal, contacta @staff por mention ou DM
