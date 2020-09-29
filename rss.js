@@ -93,7 +93,7 @@ async function start(guildServer) {
 
         for (key in courses[(tmpYear+1).toString()][currentSemester]) {
             course = courses[(tmpYear+1).toString()][currentSemester][key];
-            let feed = await parser.parseURL(course.announcements);
+            let feed = await parser.parseURL(course.announcements).catch(console.error);
             feed.items.sort((a, b) => {
                 return (new Date(b.pubDate)).getTime() - (new Date(a.pubDate)).getTime();
             });

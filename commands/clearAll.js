@@ -21,6 +21,9 @@ module.exports = {
                 channel.bulkDelete(messages);
             }
         }
+
+        channel = get_channel("760244020915732501");
+        channel.send("Cleared all announcements channels");
         console.log("Cleaning all announcements channels");
 	},
 };
