@@ -89,7 +89,7 @@ async function format_feed_entry(course, entry) {
 async function start(guildServer) {
     guild = guildServer;
 
-    var job = new CronJob('* */3 * * * *', async () => {
+    var job = new CronJob('00 */3 * * * *', async () => {
 
         for (key in courses[(tmpYear+1).toString()][currentSemester]) {
             course = courses[(tmpYear+1).toString()][currentSemester][key];
