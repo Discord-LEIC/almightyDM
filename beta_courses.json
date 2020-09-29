@@ -1,0 +1,79 @@
+{
+  "LEIC-A": [
+    {
+      "name": "Introdução à Arquitetura de Computadores",
+      "acronym": "IAC",
+      "id": "1408985496305446",
+      "term": "1",
+      "rss": "https://fenix.tecnico.ulisboa.pt/disciplinas/IAC45179577/2020-2021/1-semestre/rss/announcement",
+      "announcements": "<#760575129440223353>"
+    },
+    {
+      "name": "Cálculo Diferencial e Integral I",
+      "acronym": "CDI-I",
+      "id": "1408985496305201",
+      "term": "1",
+      "rss": "https://fenix.tecnico.ulisboa.pt/disciplinas/CDI925179577/2020-2021/1-semestre/rss/announcement",
+      "announcements": "<#760575131126333471>"
+    },
+    {
+      "name": "Fundamentos da Programação",
+      "acronym": "FP",
+      "id": "1408985496305342",
+      "term": "1",
+      "rss": "https://fenix.tecnico.ulisboa.pt/disciplinas/FP45179577/2020-2021/1-semestre/rss/announcement",
+      "announcements": "<#760575145424715840>"
+    },
+    {
+      "name": "Introdução à Engenharia Informática",
+      "acronym": "IEI",
+      "id": "1408985496305104",
+      "term": "1",
+      "rss": "https://fenix.tecnico.ulisboa.pt/disciplinas/IEI7179577/2020-2021/1-semestre/rss/announcement",
+      "announcements": "<#760575153418534952>"
+    },
+    {
+      "name": "Álgebra Linear",
+      "acronym": "AL",
+      "id": "1408985496305200",
+      "term": "1",
+      "rss": "https://fenix.tecnico.ulisboa.pt/disciplinas/AL425179577/2020-2021/1-semestre/rss/announcement",
+      "announcements": "<#760575154924945459>"
+    }
+  ],
+  "LEIC-T": [
+    {
+      "name": "Introdução à Arquitetura de Computadores",
+      "acronym": "IAC",
+      "id": "1408985496305089",
+      "term": "1",
+      "rss": "https://fenix.tecnico.ulisboa.pt/disciplinas/IAC3179577/2020-2021/1-semestre/rss/announcement",
+      "announcements": "<#760575163430862898>"
+    },
+    {
+      "name": "Cálculo Diferencial e Integral I",
+      "acronym": "CDI-I",
+      "id": "1408985496305097",
+      "term": "1",
+      "rss": "https://fenix.tecnico.ulisboa.pt/disciplinas/CDI54179577/2020-2021/1-semestre/rss/announcement",
+      "announcements": "<#760575168460095580>"
+    },
+    {
+      "name": "Introdução à Engenharia Informática",
+      "acronym": "IEI",
+      "id": "1408985496305104",
+      "term": "1",
+      "rss": "https://fenix.tecnico.ulisboa.pt/disciplinas/IEI7179577/2020-2021/1-semestre/rss/announcement",
+      "announcements": "<#760575169835827241>"
+    },
+    {
+      "name": "Fundamentos de Programação",
+      "acronym": "FP",
+      "id": "1408985496305107",
+      "term": "1",
+      "rss": "https://fenix.tecnico.ulisboa.pt/disciplinas/FP179577/2020-2021/1-semestre/rss/announcement",
+      "announcements": "<#760575174231195669>"
+    }
+  ]
+}
+
