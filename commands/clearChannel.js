@@ -8,7 +8,7 @@ module.exports = {
 	name: 'clear',
     description: 'Clear all announcements for specific channel',
     usage: '$$$clear <channel_id>',
-	async execute(message, guildServer, args) {
+	async execute(client, guildServer, args) {
         guild = guildServer;
 
         let channel = get_channel(args[0].slice(2,).slice(0,-1));
