@@ -87,11 +87,13 @@ async function format_feed_entry(course, entry) {
 async function start(guildServer) {
     guild = guildServer;
 
-    var job = new CronJob('*/30 * * * * *', async () => {
-
+    var job = new CronJob('0 0,10,20,30,40,50 * * * *', async () => {
+        let now = new Date();
+        console.log(`[${now}] Updating RSS feeds`);
         for (campus in courses) {
             for (key in courses[campus]) {
                 course = courses[campus][key];
+                console.log(`[+] Fetching ${campus}-${course.acronym} at ${course.rss}`);
 
                 let feed = await parser.parseURL(course.rss).catch(console.error);
                 feed.items.sort((a, b) => {
