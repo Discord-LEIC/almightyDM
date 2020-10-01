@@ -19,7 +19,7 @@ const roleSelectionEmoji = config.roleSelectionEmoji; // Emoji identifier used f
 const msg_roles = config.msg_roles; // Message ID vs Role ID mapping
 
 var guild;
-const guildID = '761270031865610301';
+const guildID = '761280787852165130';
 
 const testing_id = '757019523252748351';
 const bodCommands_id = '756527548862693396';

@@ -20,6 +20,8 @@ let excludedCourses = [
 
 // config objects
 let enrollment_mappings = {}
+let announcementsCategories = {}
+let discussionCategories = {}
 
 let roles = {}
 
@@ -131,7 +133,7 @@ async function setup_server(serverGuild) {
         ]
     });
 
-    let announcementsCategory = await create_channel(serverGuild, 'Announcements', {
+    announcementsCategories['LEIC-A'] = await create_channel(serverGuild, 'Announcements-A', {
         'type': 'category',
         'permissionOverwrites': [
             generate_permissions(everyoneRoleId, [
@@ -139,13 +141,48 @@ async function setup_server(serverGuild) {
         ]
     });
 
-    let discussionCategory = await create_channel(serverGuild, 'Discussion', {
+    //TODO: This is very ugly
+    announcementsCategories['LEIC-T'] = await create_channel(serverGuild, 'Announcements-T', {
         'type': 'category',
         'permissionOverwrites': [
             generate_permissions(everyoneRoleId, [
             ])
         ]
     });
+
+    announcementsCategories['MEIC'] = await create_channel(serverGuild, 'Announcements-M', {
+        'type': 'category',
+        'permissionOverwrites': [
+            generate_permissions(everyoneRoleId, [
+            ])
+        ]
+    });
+
+    discussionCategories['LEIC-A'] =  await create_channel(serverGuild, 'Discussion-A', {
+        'type': 'category',
+        'permissionOverwrites': [
+            generate_permissions(everyoneRoleId, [
+            ])
+        ]
+    });
+
+    discussionCategories['LEIC-T'] =  await create_channel(serverGuild, 'Discussion-T', {
+        'type': 'category',
+        'permissionOverwrites': [
+            generate_permissions(everyoneRoleId, [
+            ])
+        ]
+    });
+
+    discussionCategories['MEIC'] =  await create_channel(serverGuild, 'Discussion-M', {
+        'type': 'category',
+        'permissionOverwrites': [
+            generate_permissions(everyoneRoleId, [
+            ])
+        ]
+    });
+
+    //END TODO
 
     let degrees = get_degrees(targets);
     console.log(`[+] Got degrees ${degrees}`);
@@ -200,19 +237,27 @@ async function setup_server(serverGuild) {
                 }
             });
 
-            continue
-
             // TODO: send enrollment message to enrollment channel (DONT FORGET TO REACT TO MESSAGE)
-            let enrollmentMsgId = Math.floor(Math.random() * 100000000);
-            enrollment_mappings[enrollmentMsgId] = courseRoleId.toString();
-            console.log(`[+] Sending enrollment message to channel ${enrollChannelName} with id ${enrollmentMsgId}`);
-
+            let message = await send_subscription_message(courseRoleName, enrollChannel);
+            enrollment_mappings[message.id] = courseRole.id.toString();
 
             // TODO: generate course channels (DONT FORGET TO SET PERMISSIONS!)
             let announcementChannelName = `${courseRoleName}a`;
-            let announcementChannelId = await create_channel(serverGuild, announcementChannelName, 0, 0);
-            console.log(`[+] Generating channel ${announcementChannelName} for degree ${degreeRoleName} with id ${announcementChannelId}`);
+            let announcementChannel = await create_channel(serverGuild, announcementChannelName, {
+                'type': 'text',
+                'parent': announcementsCategories[degreeRoleName].id,
+                'permissionOverwrites': [
+                    generate_permissions(courseRole.id, [
+                        Permissions.FLAGS.VIEW_CHANNEL,
+                        Permissions.FLAGS.READ_MESSAGE_HISTORY,
+                        Permissions.FLAGS.ADD_REACTIONS
+                    ]),
+                    generate_permissions(everyoneRoleId, [
+                    ])
+                ]
+            });
 
+            continue;
             let discussionChannelName = `${courseRoleName}d`;
             let discussionChannelId = await create_channel(serverGuild, announcementChannelName, 0, 0);
             console.log(`[+] Generating channel ${discussionChannelName} for degree ${degreeRoleName} with id ${discussionChannelId}`);
@@ -377,7 +422,7 @@ function httpGet(url) {
 async function send_subscription_message(content, channel){
     let message = await channel.send(`[${content}]`);
     message.react(roleSelectionEmoji);
-    console.log(`[+]Sent subscription message for ${content} to ${channel.name}`);
+    console.log(`[+] Sent subscription message for ${content} to ${channel.name}`);
     return message;
 }
 
