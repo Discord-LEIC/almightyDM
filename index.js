@@ -19,7 +19,7 @@ const roleSelectionEmoji = config.roleSelectionEmoji; // Emoji identifier used f
 const msg_roles = config.msg_roles; // Message ID vs Role ID mapping
 
 var guild;
-const guildID = '760539145478078534';
+const guildID = '761270031865610301';
 
 const testing_id = '757019523252748351';
 const bodCommands_id = '756527548862693396';
@@ -35,14 +35,22 @@ client.on("ready", async() => {
 
     // TODO: REMOVE THIS
     guild.channels.cache.forEach(channel => {
-        if(channel.name != 'safe'){
+        if(channel.type != 'category'){
+            console.log(`Deleting ${channel.name}`);
+            channel.delete();
+        }
+    });
+
+    //TODO: Hardcoded mess, please kill.
+    guild.channels.cache.forEach(channel => {
+        if(channel.type == 'category'){
             console.log(`Deleting ${channel.name}`);
             channel.delete();
         }
     });
 
     guild.roles.cache.forEach(role => {
-        if(role.name != '@everyone' & role.name !='bot'){
+        if(role.name != '@everyone' & role.name !='bot' & role.name != 'admin'){
             console.log(`Deleting role ${role.name}`);    
             role.delete().catch(console.error);
         }

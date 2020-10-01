@@ -1,9 +1,11 @@
 const { Guild, Permissions } = require("discord.js");
-
+const config = require('./config.json');
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 let GET_DEGREES_URL = "https://fenix.tecnico.ulisboa.pt/api/fenix/v1/degrees"
 let GET_COURSES_URL = "https://fenix.tecnico.ulisboa.pt/api/fenix/v1/degrees/{}/courses?academicTerm={}"
+
+const roleSelectionEmoji = config.roleSelectionEmoji;
 
 let targets = ["LEIC-A", "LEIC-T", "MEIC-A"];
 
@@ -117,7 +119,7 @@ async function setup_server(serverGuild) {
     });
 
     //TODO: Send Enroll Degree messages
-    let degreeTextID = await create_channel(serverGuild, 'enroll-degree', {
+    let degreeText = await create_channel(serverGuild, 'enroll-degree', {
         'type': 'text',
         'parent': welcomeCategory.id,
         'permissionOverwrites': [
@@ -160,9 +162,8 @@ async function setup_server(serverGuild) {
         });
 
         // TODO: send message to enroll-degree with degree (DONT FORGET TO REACT TO MESSAGE)
-        /*let enrollmentMsgId = Math.floor(Math.random() * 100000000);
-        enrollment_mappings[enrollmentMsgId] = degreeRoleId.toString();
-        console.log(`[+] Sending enrollment message to #enroll-campi with id ${enrollmentMsgId}`);*/
+        let message = await send_subscription_message(degreeRoleName, degreeText);
+        enrollment_mappings[message.id] = degreeRole.id.toString();
 
         // TODO: create enrollment channel for degree
         let enrollChannelName = `enroll-${degreeRoleName}`;
@@ -174,12 +175,12 @@ async function setup_server(serverGuild) {
                     Permissions.FLAGS.VIEW_CHANNEL,
                     Permissions.FLAGS.READ_MESSAGE_HISTORY,
                     Permissions.FLAGS.ADD_REACTIONS
+                ]),
+                generate_permissions(everyoneRoleId, [
                 ])
             ]
         });
         console.log(`[+] Creating enrollment channel ${enrollChannelName} with id ${enrollChannel.id}`);
-
-        continue;
 
         console.log(`[+] Retrieving courses from ${degree.acronym}...`);
         let courses = get_courses(degree.id);
@@ -188,12 +189,18 @@ async function setup_server(serverGuild) {
             // TODO TODO: verificar se o role esta duplicado
 
             // TODO: generate course role
-            let courseRoleName = `${course.acronym}-`;
+            let courseRoleName = `${course.acronym}`;
             if(!(degreeRoleName === "MEIC")) {
-                courseRoleName += `${get_degree_letter(degreeRoleName)}`;
+                courseRoleName += `-${get_degree_letter(degreeRoleName)}`;
             }
-            let courseRoleId = Math.floor(Math.random() * 100000000);
-            console.log(`[+] Creating role ${courseRoleName} with id ${courseRoleId}`);
+            courseRole = await create_role(serverGuild, {
+                'data': {
+                    'name': courseRoleName,
+                    'mentionable': true
+                }
+            });
+
+            continue
 
             // TODO: send enrollment message to enrollment channel (DONT FORGET TO REACT TO MESSAGE)
             let enrollmentMsgId = Math.floor(Math.random() * 100000000);
@@ -366,6 +373,14 @@ function httpGet(url) {
     xmlHttp.send( null );
     return JSON.parse(xmlHttp.responseText);
 }
+
+async function send_subscription_message(content, channel){
+    let message = await channel.send(`[${content}]`);
+    message.react(roleSelectionEmoji);
+    console.log(`[+]Sent subscription message for ${content} to ${channel.name}`);
+    return message;
+}
+
 
 module.exports.create_channel = create_channel;
 module.exports.setup_server = setup_server;
