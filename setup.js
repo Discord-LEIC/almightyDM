@@ -242,6 +242,9 @@ async function setup_server(serverGuild) {
             enrollment_mappings[message.id] = courseRole.id.toString();
 
             // TODO: generate course channels (DONT FORGET TO SET PERMISSIONS!)
+            if(degreeRoleName === "MEIC")
+                courseRoleName +='-';
+
             let announcementChannelName = `${courseRoleName}a`;
             let announcementChannel = await create_channel(serverGuild, announcementChannelName, {
                 'type': 'text',
@@ -257,12 +260,25 @@ async function setup_server(serverGuild) {
                 ]
             });
 
-            continue;
             let discussionChannelName = `${courseRoleName}d`;
-            let discussionChannelId = await create_channel(serverGuild, announcementChannelName, 0, 0);
-            console.log(`[+] Generating channel ${discussionChannelName} for degree ${degreeRoleName} with id ${discussionChannelId}`);
-
-            course['announcements'] = announcementChannelId.toString();
+            let discussionChannel = await create_channel(serverGuild, discussionChannelName, {
+                'type': 'text',
+                'parent': discussionCategories[degreeRoleName].id,
+                'permissionOverwrites': [
+                    generate_permissions(courseRole.id, [
+                        Permissions.FLAGS.VIEW_CHANNEL,
+                        Permissions.FLAGS.READ_MESSAGE_HISTORY,
+                        Permissions.FLAGS.ADD_REACTIONS,
+                        Permissions.FLAGS.SEND_MESSAGES,
+                        Permissions.FLAGS.SEND_TTS_MESSAGES,
+                        Permissions.FLAGS.EMBED_LINKS,
+                        Permissions.FLAGS.ATTACH_FILES,
+                        Permissions.FLAGS.USE_EXTERNAL_EMOJIS
+                    ]),
+                    generate_permissions(everyoneRoleId, [
+                    ])
+                ]
+            });
         }
 
         courses_db[degreeRoleName] = courses;

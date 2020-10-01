@@ -19,7 +19,7 @@ const roleSelectionEmoji = config.roleSelectionEmoji; // Emoji identifier used f
 const msg_roles = config.msg_roles; // Message ID vs Role ID mapping
 
 var guild;
-const guildID = '761280787852165130';
+const guildID = '761290372315086869';
 
 const testing_id = '757019523252748351';
 const bodCommands_id = '756527548862693396';
@@ -55,7 +55,7 @@ client.on("ready", async() => {
             role.delete().catch(console.error);
         }
     });
-
+ 
     await setup.setup_server(guild);
 
     // TODO: END REMOVE
