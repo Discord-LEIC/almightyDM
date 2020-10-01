@@ -93,7 +93,7 @@ async function start(guildServer) {
         for (campus in courses) {
             for (key in courses[campus]) {
                 course = courses[campus][key];
-                console.log(`[+] Fetching ${campus}-${course.acronym} at ${course.rss}`);
+                // console.log(`[+] Fetching ${campus}-${course.acronym} at ${course.rss}`);
 
                 let feed = await parser.parseURL(course.rss).catch(console.error);
                 feed.items.sort((a, b) => {
