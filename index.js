@@ -5,20 +5,21 @@ client.commands = new Discord.Collection();
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
-const rss = require('./rss');
+const rss = require('./rss_alpha');
 const setup = require('./setup');
 
 const config = require('./config.json');
 const { prefix } = require('./config.json');
-const guildID = config.guildID;
 
-const token = process.env.DISCORD_TOKEN;
+
+const token = 'NzYwODcyOTUxNTkwNTUxNTYy.X3SYJw.5Ig4YHVBg1rhYKa6WxyXwx0gT5E';
 
 const subscriptionChannelID = config.channels.subscribe; // #welcome channel ID (this is monitored for reactions)
 const roleSelectionEmoji = config.roleSelectionEmoji; // Emoji identifier used for role assignment
 const msg_roles = config.msg_roles; // Message ID vs Role ID mapping
 
 var guild;
+const guildID = '760539145478078534';
 
 const testing_id = '757019523252748351';
 const bodCommands_id = '756527548862693396';
@@ -29,34 +30,30 @@ function get_channel(id) {
 
 
 client.on("ready", async() => {
-
+    console.log(`Logged in as ${client.user.tag}`);
+    guild = await client.guilds.cache.get(guildID);
 
     // TODO: REMOVE THIS
-
-    guild = await client.guilds.cache.get('760532132924751935');
-
     guild.channels.cache.forEach(channel => {
-        console.log(`Deleting ${channel.name}`);
-        channel.delete()
+        if(channel.name != 'safe'){
+            console.log(`Deleting ${channel.name}`);
+            channel.delete();
+        }
     });
 
     guild.roles.cache.forEach(role => {
-        console.log(`Deleting role ${role.name}`);
-        role.delete()
-            .catch(console.error)
+        if(role.name != '@everyone' & role.name !='bot'){
+            console.log(`Deleting role ${role.name}`);    
+            role.delete().catch(console.error);
+        }
     });
 
-    // await setup.setup_server(guild);
-
-    process.exit(0);
-
-
-
+    await setup.setup_server(guild);
 
     // TODO: END REMOVE
 
-    guild = await client.guilds.cache.get(guildID);
-
+    //TODO: Get this working
+    /*
     // Fetch subscription messages
     const subscriptionChannel = get_channel(subscriptionChannelID);
     subscriptionChannel.messages.fetch()
@@ -67,9 +64,8 @@ client.on("ready", async() => {
         client.commands.set(command.name, command);
     }
 
-    rss.start(guild);
-    
-    console.log(`Logged in as ${client.user.tag}`);
+    //rss.start(guild);
+    */
 }); 
 
 client.on('messageReactionAdd', async(reaction, user) => {

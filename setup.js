@@ -65,82 +65,36 @@ function generate_permissions(roleId, allowed) {
     };
 }
 
-
-
-//const guildID = config.guildID;
-
 async function setup_server(serverGuild) {
     // TODO: CLEAR SERVER SETTINGS
-
-
-    // TODO: generate section Staff
-    // TODO: generate channel #puppet-master // commands
-    // TODO: generate channel #testing       // testing
-    // TODO: generate channel #genesis       // admin-text
-    // TODO: generate channel $admin-voice   // admin-voice
-
-
     console.log("Setting up server");
-
     const everyoneRoleId = serverGuild.id;
-    // const afonsoRoleId = '760554850907062402';
 
+    await create_staff_section(serverGuild, everyoneRoleId);
+    await create_welcome_section(serverGuild, everyoneRoleId);
 
-    // TODO: generate section Welcome
-    let welcomeCategory = await create_channel(serverGuild, 'Welcome', {
-        'type': 'category'
-    });
-
-
-    // TODO: send welcome message to this channel
-    // nobody can write in this channel!
-    let welcomeText = await create_channel(serverGuild, 'welcome', {
-        'type': 'text',
-        'parent': welcomeCategory.id,
-        'permissionOverwrites': [
-            generate_permissions(everyoneRoleId, [
-                Permissions.FLAGS.VIEW_CHANNEL,
-                Permissions.FLAGS.READ_MESSAGE_HISTORY
-            ])
-        ]
-    });
-
-    // TODO: send rules message to this channel
-    let rulesText = await create_channel(serverGuild, 'rules', {
-        'type': 'text',
-        'parent': welcomeCategory.id,
-        'permissionOverwrites': [
-            generate_permissions(everyoneRoleId, [
-                Permissions.FLAGS.VIEW_CHANNEL,
-                Permissions.FLAGS.READ_MESSAGE_HISTORY
-            ])
-        ]
-    });
-
-    let degreeTextID = await create_channel(serverGuild, 'enroll-degree', {
-        'type': 'text',
-        'parent': welcomeCategory.id,
-        'permissionOverwrites': [
-            generate_permissions(everyoneRoleId, [
-                Permissions.FLAGS.VIEW_CHANNEL,
-                Permissions.FLAGS.READ_MESSAGE_HISTORY,
-                Permissions.FLAGS.ADD_REACTIONS
-            ])
-        ]
-    });
-
+    // TODO: generate section Course Announcements
     let announcementsCategory = await create_channel(serverGuild, 'Announcements', {
-        'type': 'category'
+        'type': 'category',
+        'permissionOverwrites': [
+            generate_permissions(everyoneRoleId, [
+            ])
+        ]
     });
 
     // TODO: generate section Course Discussion
     let discussionCategory = await create_channel(serverGuild, 'Discussion', {
-        'type': 'category'
+        'type': 'category',
+        'permissionOverwrites': [
+            generate_permissions(everyoneRoleId, [
+            ])
+        ]
     });
 
     let degrees = get_degrees(targets);
     console.log(`[+] Got degrees ${degrees}`);
 
+    
     let courses_db = {}
     for(const degree of degrees) {
 
@@ -207,6 +161,92 @@ async function setup_server(serverGuild) {
     console.log(courses_db);
 }
 
+async function create_staff_section(serverGuild, everyoneRoleId){
+    // Generate section Staff
+
+    console.log(`[+] Creating the Staff Section`)
+    let staffCategory = await create_channel(serverGuild, '🔑Staff', {
+        'type': 'category',
+        'permissionOverwrites': [
+            generate_permissions(everyoneRoleId, [
+            ])
+        ]
+    });
+
+    await create_channel(serverGuild, 'puppet-master', {
+        'type': 'text',
+        'parent': staffCategory.id
+    });
+
+    await create_channel(serverGuild, 'testing ', {
+        'type': 'text',
+        'parent': staffCategory.id,
+    });
+
+    await create_channel(serverGuild, 'genesis', {
+        'type': 'text',
+        'parent': staffCategory.id,
+    });
+
+    await create_channel(serverGuild, 'admin-voice', {
+        'type': 'voice',
+        'parent': staffCategory.id,
+    });
+}
+
+async function create_welcome_section(serverGuild, everyoneRoleId){
+
+    console.log(`[+] Creating the Welcome Section`)
+    let welcomeCategory = await create_channel(serverGuild, '🎓Welcome', {
+        'type': 'category',
+        'permissionOverwrites': [
+            generate_permissions(everyoneRoleId, [
+            ])
+        ]
+    });
+
+    // TODO: send welcome message to this channel
+    // nobody can write in this channel!
+    let welcomeText = await create_channel(serverGuild, 'welcome', {
+        'type': 'text',
+        'parent': welcomeCategory.id,
+        'permissionOverwrites': [
+            generate_permissions(everyoneRoleId, [
+                Permissions.FLAGS.VIEW_CHANNEL,
+                Permissions.FLAGS.READ_MESSAGE_HISTORY
+            ])
+        ]
+    });
+
+    // TODO: send rules message to this channel
+    let rulesText = await create_channel(serverGuild, 'rules', {
+        'type': 'text',
+        'parent': welcomeCategory.id,
+        'permissionOverwrites': [
+            generate_permissions(everyoneRoleId, [
+                Permissions.FLAGS.VIEW_CHANNEL,
+                Permissions.FLAGS.READ_MESSAGE_HISTORY
+            ])
+        ]
+    });
+
+    //TODO: Send Enroll Degree messages
+    let degreeTextID = await create_channel(serverGuild, 'enroll-degree', {
+        'type': 'text',
+        'parent': welcomeCategory.id,
+        'permissionOverwrites': [
+            generate_permissions(everyoneRoleId, [
+                Permissions.FLAGS.VIEW_CHANNEL,
+                Permissions.FLAGS.READ_MESSAGE_HISTORY,
+                Permissions.FLAGS.ADD_REACTIONS
+            ])
+        ]
+    });
+
+    //TODO: Create enroll courses
+    //TODO: Create enroll year
+}
+
 async function create_channel(serverGuild, name, options){
     let channel = await serverGuild.channels.create(name, options)
         .catch(console.error);
@@ -221,10 +261,6 @@ async function create_role(serverGuild, options) {
     console.log(`[+] Creating role ${role.name} with id ${role.id}`);
 
     return role;
-}
-
-function get_guild(){
-    return;
 }
 
 function get_degree_letter(degree_name) {
