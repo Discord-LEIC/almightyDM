@@ -5,7 +5,7 @@ client.commands = new Discord.Collection();
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
-const rss = require('./rss_alpha');
+const rss = require('./rss');
 const setup = require('./setup');
 
 const config = require('./config.json');

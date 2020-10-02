@@ -1,4 +1,6 @@
-const { Guild, Permissions } = require("discord.js");
+let Discord = require("discord.js");
+const { Guild, Permissions, DiscordAPIError} = require("discord.js");
+let randomColor = require('randomcolor');
 const config = require('./config.json');
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
@@ -199,7 +201,16 @@ async function setup_server(serverGuild) {
         });
 
         // TODO: send message to enroll-degree with degree (DONT FORGET TO REACT TO MESSAGE)
-        let message = await send_subscription_message(degreeRoleName, degreeText);
+        let message = await send_subscription_message(
+            `[${degreeRoleName}] Enroll in this degree`,
+            null,
+            `If you're currently enrolled in this degree react with ✋ \
+            to this message to gain the <@&${degreeRole.id}> role, giving \
+            you access to specific content. If at any point you wish to lose \
+            this role just remove the react.`,
+            randomColor(),
+            degreeText);
+
         enrollment_mappings[message.id] = degreeRole.id.toString();
 
         // TODO: create enrollment channel for degree
@@ -238,7 +249,16 @@ async function setup_server(serverGuild) {
             });
 
             // TODO: send enrollment message to enrollment channel (DONT FORGET TO REACT TO MESSAGE)
-            let message = await send_subscription_message(courseRoleName, enrollChannel);
+            let message = await send_subscription_message(
+            `[${courseRoleName}] Enroll in this course`,
+            null,
+            `If you're currently enrolled in this course react with ✋ \
+            to this message to gain the <@&${courseRole.id}> role, giving \
+            you access to the specific announcement and discussion channels. \
+            If at any point you wish to lose this role just remove the react.`,
+            randomColor(),
+            enrollChannel);
+
             enrollment_mappings[message.id] = courseRole.id.toString();
 
             // TODO: generate course channels (DONT FORGET TO SET PERMISSIONS!)
@@ -435,13 +455,27 @@ function httpGet(url) {
     return JSON.parse(xmlHttp.responseText);
 }
 
-async function send_subscription_message(content, channel){
+async function send_message(content, channel){
     let message = await channel.send(`[${content}]`);
-    message.react(roleSelectionEmoji);
-    console.log(`[+] Sent subscription message for ${content} to ${channel.name}`);
     return message;
 }
 
+async function send_subscription_message(title, url, description, color, channel){
+    let message = await send_embeded_message(title, url, description, color, channel);
+    message.react(roleSelectionEmoji);
+    console.log(`[+] Sent subscription message for ${title} to ${channel.name}`);
+    return message;
+}
+
+async function send_embeded_message(title, url, description, color, channel){
+    let embedMessage = await new Discord.MessageEmbed()
+        .setTitle(title)
+        .setURL(url)
+        .setDescription(description)
+        .setColor(color);
+    let message = await channel.send(embedMessage);
+    return message;
+}
 
 module.exports.create_channel = create_channel;
 module.exports.setup_server = setup_server;
