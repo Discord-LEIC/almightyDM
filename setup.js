@@ -24,6 +24,7 @@ let excludedCourses = [
 let enrollment_mappings = {}
 let announcementsCategories = {}
 let discussionCategories = {}
+let degreeRoles = []
 
 let roles = {}
 
@@ -79,14 +80,6 @@ async function setup_server(serverGuild) {
     //TODO: Replace stubs
 
     await create_staff_section(serverGuild, everyoneRoleId);
-    //await create_welcome_section(serverGuild, everyoneRoleId);
-    //await create_RNL_section(serverGuild, everyoneRoleId);
-    //await create_Arco_section(serverGuild, everyoneRoleId);
-    //await create_NEIIST_section(serverGuild, everyoneRoleId);
-    //await create_SINFO_section(serverGuild, everyoneRoleId);
-    //await create_GCE_section(serverGuild, everyoneRoleId);
-    //await create_RNL-Admin_section(serverGuild, everyoneRoleId);
-    //await create_Praxe_section(serverGuild, everyoneRoleId);
 
     console.log(`[+] Creating the Welcome Section`)
     let welcomeCategory = await create_channel(serverGuild, '🎓Welcome', {
@@ -200,6 +193,8 @@ async function setup_server(serverGuild) {
             }
         });
 
+        degreeRoles.push(degreeRole);
+
         // TODO: send message to enroll-degree with degree (DONT FORGET TO REACT TO MESSAGE)
         let message = await send_subscription_message(
             `[${degreeRoleName}] Enroll in this degree`,
@@ -304,41 +299,19 @@ async function setup_server(serverGuild) {
         courses_db[degreeRoleName] = courses;
     }
 
+    // TODO: Uncomment this
+    /*
+    await create_RNL_section(serverGuild, everyoneRoleId);
+    //await create_Arco_section(serverGuild, everyoneRoleId);
+    await create_student_group_section(serverGuild, 'NEIIST', '♦️', '#f09d30', everyoneRoleId);
+    await create_student_group_section(serverGuild, 'SINFO', '🔹', '#295a8a', everyoneRoleId);
+    await create_student_group_section(serverGuild, 'GCE', '💼', '#00d3ff', everyoneRoleId);
+    await create_student_group_section(serverGuild, 'RNL-Admin', '💻', '#000000', everyoneRoleId);
+    await create_student_group_section(serverGuild, 'Praxe', '👥', '#666666', everyoneRoleId);
+    */
+
     console.log(enrollment_mappings);
     console.log(courses_db);
-}
-
-async function create_staff_section(serverGuild, everyoneRoleId){
-    // Generate section Staff
-
-    console.log(`[+] Creating the Staff Section`)
-    let staffCategory = await create_channel(serverGuild, '🔑Staff', {
-        'type': 'category',
-        'permissionOverwrites': [
-            generate_permissions(everyoneRoleId, [
-            ])
-        ]
-    });
-
-    await create_channel(serverGuild, 'puppet-master', {
-        'type': 'text',
-        'parent': staffCategory.id
-    });
-
-    await create_channel(serverGuild, 'testing ', {
-        'type': 'text',
-        'parent': staffCategory.id,
-    });
-
-    await create_channel(serverGuild, 'genesis', {
-        'type': 'text',
-        'parent': staffCategory.id,
-    });
-
-    await create_channel(serverGuild, 'admin-voice', {
-        'type': 'voice',
-        'parent': staffCategory.id,
-    });
 }
 
 async function create_channel(serverGuild, name, options){
@@ -476,6 +449,192 @@ async function send_embeded_message(title, url, description, color, channel){
     let message = await channel.send(embedMessage);
     return message;
 }
+
+async function create_staff_section(serverGuild, everyoneRoleId){
+    // Generate section Staff
+
+    console.log(`[+] Creating the Staff Section`)
+    let staffCategory = await create_channel(serverGuild, '🔑Staff', {
+        'type': 'category',
+        'permissionOverwrites': [
+            generate_permissions(everyoneRoleId, [
+            ])
+        ]
+    });
+
+    await create_channel(serverGuild, 'puppet-master', {
+        'type': 'text',
+        'parent': staffCategory.id
+    });
+
+    await create_channel(serverGuild, 'testing ', {
+        'type': 'text',
+        'parent': staffCategory.id,
+    });
+
+    await create_channel(serverGuild, 'genesis', {
+        'type': 'text',
+        'parent': staffCategory.id,
+    });
+
+    await create_channel(serverGuild, 'admin-voice', {
+        'type': 'voice',
+        'parent': staffCategory.id,
+    });
+}
+
+async function create_RNL_section(serverGuild, everyoneRoleId){
+    // Generate section Staff
+
+    console.log(`[+] Creating the RNL Section`)
+    let rnlCategory = await create_channel(serverGuild, '🏢RNL', {
+        'type': 'category',
+        'permissionOverwrites': [
+            generate_permissions(everyoneRoleId, [
+            ]),
+            generate_permissions(degreeRoles[0].id, [
+                Permissions.FLAGS.ADD_REACTIONS,
+                Permissions.FLAGS.VIEW_AUDIT_LOG,
+                Permissions.FLAGS.PRIORITY_SPEAKER,
+                Permissions.FLAGS.STREAM,
+                Permissions.FLAGS.VIEW_CHANNEL,
+                Permissions.FLAGS.SEND_MESSAGES,
+                Permissions.FLAGS.SEND_TTS_MESSAGES,
+                Permissions.FLAGS.MANAGE_MESSAGES,
+                Permissions.FLAGS.EMBED_LINKS,
+                Permissions.FLAGS.ATTACH_FILES,
+                Permissions.FLAGS.READ_MESSAGE_HISTORY,
+                Permissions.FLAGS.MENTION_EVERYONE,
+                Permissions.FLAGS.USE_EXTERNAL_EMOJIS,
+                Permissions.FLAGS.CONNECT,
+                Permissions.FLAGS.SPEAK
+            ]),
+            generate_permissions(degreeRoles[1].id, [
+                Permissions.FLAGS.ADD_REACTIONS,
+                Permissions.FLAGS.VIEW_AUDIT_LOG,
+                Permissions.FLAGS.PRIORITY_SPEAKER,
+                Permissions.FLAGS.STREAM,
+                Permissions.FLAGS.VIEW_CHANNEL,
+                Permissions.FLAGS.SEND_MESSAGES,
+                Permissions.FLAGS.SEND_TTS_MESSAGES,
+                Permissions.FLAGS.MANAGE_MESSAGES,
+                Permissions.FLAGS.EMBED_LINKS,
+                Permissions.FLAGS.ATTACH_FILES,
+                Permissions.FLAGS.READ_MESSAGE_HISTORY,
+                Permissions.FLAGS.MENTION_EVERYONE,
+                Permissions.FLAGS.USE_EXTERNAL_EMOJIS,
+                Permissions.FLAGS.CONNECT,
+                Permissions.FLAGS.SPEAK
+            ]),
+            generate_permissions(degreeRoles[2].id, [
+                Permissions.FLAGS.ADD_REACTIONS,
+                Permissions.FLAGS.VIEW_AUDIT_LOG,
+                Permissions.FLAGS.PRIORITY_SPEAKER,
+                Permissions.FLAGS.STREAM,
+                Permissions.FLAGS.VIEW_CHANNEL,
+                Permissions.FLAGS.SEND_MESSAGES,
+                Permissions.FLAGS.SEND_TTS_MESSAGES,
+                Permissions.FLAGS.MANAGE_MESSAGES,
+                Permissions.FLAGS.EMBED_LINKS,
+                Permissions.FLAGS.ATTACH_FILES,
+                Permissions.FLAGS.READ_MESSAGE_HISTORY,
+                Permissions.FLAGS.MENTION_EVERYONE,
+                Permissions.FLAGS.USE_EXTERNAL_EMOJIS,
+                Permissions.FLAGS.CONNECT,
+                Permissions.FLAGS.SPEAK
+            ]),
+        ]
+    });
+    
+    await create_channel(serverGuild, '💻 Lab 15', {
+        'type': 'voice',
+        'parent': rnlCategory.id
+    });
+
+    await create_channel(serverGuild, '💻 Lab 16', {
+        'type': 'voice',
+        'parent': rnlCategory.id,
+    });
+
+    await create_channel(serverGuild, '☕ Maquinas', {
+        'type': 'voice',
+        'parent': rnlCategory.id,
+    });
+}
+
+async function create_student_group_section(serverGuild, name, emote, color, everyoneRoleId){
+    let role = await create_role(serverGuild, {
+        'data': {
+            'name': name,
+            'color': color,
+            'mentionable': true
+        }
+    });
+
+    console.log(`[+] Creating the ${name} Section`)
+
+    let category = await create_channel(serverGuild, `${emote}${name}`, {
+        'type': 'category',
+        'permissionOverwrites': [
+            generate_permissions(everyoneRoleId, [
+            ]),
+            generate_permissions(role.id, [
+                Permissions.FLAGS.CREATE_INSTANT_INVITE,
+                Permissions.FLAGS.MANAGE_CHANNELS,
+                Permissions.FLAGS.ADD_REACTIONS,
+                Permissions.FLAGS.VIEW_AUDIT_LOG,
+                Permissions.FLAGS.PRIORITY_SPEAKER,
+                Permissions.FLAGS.STREAM,
+                Permissions.FLAGS.VIEW_CHANNEL,
+                Permissions.FLAGS.SEND_MESSAGES,
+                Permissions.FLAGS.SEND_TTS_MESSAGES,
+                Permissions.FLAGS.MANAGE_MESSAGES,
+                Permissions.FLAGS.EMBED_LINKS,
+                Permissions.FLAGS.ATTACH_FILES,
+                Permissions.FLAGS.READ_MESSAGE_HISTORY,
+                Permissions.FLAGS.MENTION_EVERYONE,
+                Permissions.FLAGS.USE_EXTERNAL_EMOJIS,
+                Permissions.FLAGS.CONNECT,
+                Permissions.FLAGS.SPEAK,
+                Permissions.FLAGS.MUTE_MEMBERS,
+                Permissions.FLAGS.DEAFEN_MEMBERS,
+                Permissions.FLAGS.MOVE_MEMBERS,
+                Permissions.FLAGS.USE_VAD,
+                Permissions.FLAGS.MANAGE_WEBHOOKS,
+                Permissions.FLAGS.MANAGE_ROLES,
+                Permissions.FLAGS.MANAGE_EMOJIS
+            ]),
+        ]
+    });
+    
+    await create_channel(serverGuild, 'announcements', {
+        'type': 'text',
+        'parent': category.id,
+        'permissionOverwrites': [
+            generate_permissions(everyoneRoleId, [
+                Permissions.FLAGS.VIEW_CHANNEL,
+                Permissions.FLAGS.READ_MESSAGE_HISTORY,
+                Permissions.FLAGS.ADD_REACTIONS
+            ]),
+        ]
+    });
+
+    await create_channel(serverGuild, 'Discussion', {
+        'type': 'text',
+        'parent': category.id,
+    });
+
+    await create_channel(serverGuild, 'Private', {
+        'type': 'voice',
+        'parent': category.id,
+    });
+}
+
+//await create_Arco_section(serverGuild, everyoneRoleId);
+//await create_SINFO_section(serverGuild, everyoneRoleId);
+//await create_GCE_section(serverGuild, everyoneRoleId);
+//await create_RNL-Admin_section(serverGuild, everyoneRoleId);
+//await create_Praxe_section(serverGuild, everyoneRoleId);
 
 module.exports.create_channel = create_channel;
 module.exports.setup_server = setup_server;
