@@ -33,6 +33,12 @@ client.on("ready", async() => {
     console.log(`Logged in as ${client.user.tag}`);
     guild = await client.guilds.cache.get(guildID);
 
+    for (const file of commandFiles) {
+        const command = require(`./commands/${file}`);
+        client.commands.set(command.name, command);
+    }
+
+    /*
     // TODO: REMOVE THIS
     guild.channels.cache.forEach(channel => {
         if(channel.type != 'category'){
@@ -55,8 +61,8 @@ client.on("ready", async() => {
             role.delete().catch(console.error);
         }
     });
- 
-    await setup.setup_server(guild);
+ */
+   // await setup.setup_server(guild);
 
     // TODO: END REMOVE
 
@@ -67,10 +73,6 @@ client.on("ready", async() => {
     subscriptionChannel.messages.fetch()
         .catch(console.error);
 
-    for (const file of commandFiles) {
-        const command = require(`./commands/${file}`);
-        client.commands.set(command.name, command);
-    }
 
     //rss.start(guild);
     */
@@ -78,25 +80,25 @@ client.on("ready", async() => {
 
 client.on('messageReactionAdd', async(reaction, user) => {
 
-    return;
-
-    // Only process reactions from subscription channel
-    if (reaction.message.channel.id !== subscriptionChannelID) return;
-
     // Ignore reactions from bots
     if (user.bot) return;
 
+    // Only process reactions from subscription channel
+    if (reaction.message.channel.id === subscriptionChannelID) {
+        // Assign role when the chosen reaction is selected
+        if (reaction.emoji.identifier === roleSelectionEmoji) {
+            const member = await guild.member(user);
+            const role_id = msg_roles[reaction.message.id];
+    
+            // Ensures role exists
+            if (role_id === undefined) return;
+    
+            console.log(`${member.user.username} subscribed to ${guild.roles.cache.get(role_id).name}`);
+            member.roles.add(role_id);
+        }
 
-    // Assign role when the chosen reaction is selected
-    if (reaction.emoji.identifier === roleSelectionEmoji) {
-        const member = await guild.member(user);
-        const role_id = msg_roles[reaction.message.id];
-
-        // Ensures role exists
-        if (role_id === undefined) return;
-
-        console.log(`${member.user.username} subscribed to ${guild.roles.cache.get(role_id).name}`);
-        member.roles.add(role_id);
+    } else if (reaction.emoji.toString() === "📌" && reaction.count >= 3 && !reaction.message.pinned) {
+        await reaction.message.pin();
     }
 });
 
@@ -125,9 +127,7 @@ client.on('messageReactionRemove', async(reaction, user) => {
 
 client.on('message', message => {
 
-    return;
-
-    if (!message.content.startsWith(prefix) || message.channel.id != 760244020915732501 || !message.member.roles._roles.has("689586433232863308") || message.author.bot) return;
+    if (!message.content.startsWith(prefix) || message.channel.id != 761726189055508480 || !message.member.roles._roles.has("761717358078328842") || message.author.bot) return;
 
 	const args = message.content.slice(prefix.length).trim().split(/ +/);
     const command = args.shift().toLowerCase();

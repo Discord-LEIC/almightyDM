@@ -11,7 +11,7 @@ module.exports = {
     description: "Returns all commands, or one specific command info",
     async execute(client, guildServer, args) {
         guild = guildServer;
-        let channel = get_channel("760601249023655987");
+        let channel = get_channel("761726189055508480");
 
         if (args[0]) {
             return getCMD(client, channel, args[0]);

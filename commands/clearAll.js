@@ -1,4 +1,4 @@
-const courses = require('../beta_courses.json');
+const courses = require('../courses.json');
 
 var guild;
 
@@ -21,7 +21,7 @@ module.exports = {
             }
         }
 
-        channel = get_channel("760601249023655987");
+        channel = get_channel("761726189055508480");
         channel.send("Cleared all announcements channels");
         console.log("Cleaning all announcements channels");
 	},
