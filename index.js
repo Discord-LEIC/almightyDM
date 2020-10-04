@@ -30,14 +30,16 @@ function get_channel(id) {
 
 
 client.on("ready", async() => {
-    console.log(`Logged in as ${client.user.tag}`);
+    client.user.setActivity("0.75");
+    
     guild = await client.guilds.cache.get(guildID);
-
+    
     for (const file of commandFiles) {
         const command = require(`./commands/${file}`);
         client.commands.set(command.name, command);
     }
-
+    
+    console.log(`Logged in as ${client.user.tag}`);
     /*
     // TODO: REMOVE THIS
     guild.channels.cache.forEach(channel => {
@@ -46,7 +48,7 @@ client.on("ready", async() => {
             channel.delete();
         }
     });
-
+    
     //TODO: Hardcoded mess, please kill.
     guild.channels.cache.forEach(channel => {
         if(channel.type == 'category'){
@@ -54,35 +56,35 @@ client.on("ready", async() => {
             channel.delete();
         }
     });
-
+    
     guild.roles.cache.forEach(role => {
         if(role.name != '@everyone' & role.name !='bot' & role.name != 'admin'){
             console.log(`Deleting role ${role.name}`);    
             role.delete().catch(console.error);
         }
     });
- */
-   // await setup.setup_server(guild);
-
-    // TODO: END REMOVE
-
-    //TODO: Get this working
-    /*
-    // Fetch subscription messages
-    const subscriptionChannel = get_channel(subscriptionChannelID);
-    subscriptionChannel.messages.fetch()
-        .catch(console.error);
-
-
-    //rss.start(guild);
     */
+   // await setup.setup_server(guild);
+   
+   // TODO: END REMOVE
+   
+   //TODO: Get this working
+   /*
+   // Fetch subscription messages
+   const subscriptionChannel = get_channel(subscriptionChannelID);
+   subscriptionChannel.messages.fetch()
+   .catch(console.error);
+   
+   
+   //rss.start(guild);
+   */
 }); 
 
 client.on('messageReactionAdd', async(reaction, user) => {
-
+    
     // Ignore reactions from bots
     if (user.bot) return;
-
+    
     // Only process reactions from subscription channel
     if (reaction.message.channel.id === subscriptionChannelID) {
         // Assign role when the chosen reaction is selected
