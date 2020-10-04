@@ -29,7 +29,11 @@ function getAll(client, channel) {
             .map(cmd => `- \`${cmd.name}\``)
             .join("\n");
 
-    return channel.send(embed.setDescription(commands));
+    embed.setTitle("Available commands")
+         .setFooter("$$$help <command> for more info")
+         .setDescription(commands);
+
+    return channel.send(embed);
 }
 
 function getCMD(client, channel, input) {
