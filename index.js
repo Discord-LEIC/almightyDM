@@ -58,7 +58,7 @@ client.on("ready", async() => {
     });
     
     guild.roles.cache.forEach(role => {
-        if(role.name != '@everyone' & role.name !='bot' & role.name != 'admin'){
+        if(role.name != '@everyone' & role.name !='bot' & role.name != 'staff'){
             console.log(`Deleting role ${role.name}`);    
             role.delete().catch(console.error);
         }
