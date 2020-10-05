@@ -5,6 +5,8 @@ var CronJob = require('cron').CronJob;
 let Parser = require('rss-parser');
 let parser = new Parser();
 
+const mariadb = require('mariadb');
+
 const testing_id = '757019523252748351';
 
 var guild;
@@ -114,6 +116,8 @@ async function start(guildServer) {
                 for (let i = index - 1; i >= 0; i--) {
                     channel.send(await format_feed_entry(course, feed.items[i]));
                 }
+
+                // INSERT ANNOUNCEMENT DB
             }            
         }
     }, null, true);

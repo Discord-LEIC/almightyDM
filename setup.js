@@ -1,8 +1,10 @@
 let Discord = require("discord.js");
-const { Guild, Permissions, DiscordAPIError} = require("discord.js");
-let randomColor = require('randomcolor');
 const config = require('./config.json');
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+const { Guild, Permissions, DiscordAPIError} = require("discord.js");
+let randomColor = require('randomcolor');
+
+const mariadb = require('mariadb');
 
 let GET_DEGREES_URL = "https://fenix.tecnico.ulisboa.pt/api/fenix/v1/degrees"
 let GET_COURSES_URL = "https://fenix.tecnico.ulisboa.pt/api/fenix/v1/degrees/{}/courses?academicTerm={}"
@@ -300,6 +302,9 @@ async function setup_server(serverGuild) {
                     ])
                 ]
             });
+
+            // INSERT COURSE DB
+            // INSERT ROLE DB
         }
 
         courses_db[degreeRoleName] = courses;
