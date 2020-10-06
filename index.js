@@ -11,6 +11,13 @@ const setup = require('./setup');
 const config = require('./config.json');
 const { prefix } = require('./config.json');
 
+const mariadb = require('mariadb');
+const pool = mariadb.createPool({
+    host: 'localhost', 
+    database: 'teste', 
+    user:'root', 
+    password: '123'
+});
 
 const token = 'NzYwODcyOTUxNTkwNTUxNTYy.X3SYJw.5Ig4YHVBg1rhYKa6WxyXwx0gT5E';
 
@@ -19,7 +26,7 @@ const roleSelectionEmoji = config.roleSelectionEmoji; // Emoji identifier used f
 const msg_roles = config.msg_roles; // Message ID vs Role ID mapping
 
 var guild;
-const guildID = '761717326117732353';
+const guildID = '763017798733529108';
 
 const testing_id = '757019523252748351';
 const bodCommands_id = '756527548862693396';
@@ -27,7 +34,6 @@ const bodCommands_id = '756527548862693396';
 function get_channel(id) {
     return guild.channels.cache.get(id);
 }
-
 
 client.on("ready", async() => {
     client.user.setActivity("0.75");
@@ -40,7 +46,7 @@ client.on("ready", async() => {
     }
     
     console.log(`Logged in as ${client.user.tag}`);
-    /*
+    
     // TODO: REMOVE THIS
     guild.channels.cache.forEach(channel => {
         if(channel.type != 'category'){
@@ -58,13 +64,13 @@ client.on("ready", async() => {
     });
     
     guild.roles.cache.forEach(role => {
-        if(role.name != '@everyone' & role.name !='bot' & role.name != 'staff'){
+        if(role.name != '@everyone' & role.name !='bot' & role.name != 'staff' & role.name != 'admin'){
             console.log(`Deleting role ${role.name}`);    
             role.delete().catch(console.error);
         }
     });
-    */
-   // await setup.setup_server(guild);
+    
+   await setup.setup_server(guild, pool);
    
    // TODO: END REMOVE
    
