@@ -1,3 +1,4 @@
+const puppetMaster = require('../config.json').channels.puppetMaster;
 var guild;
 
 function get_channel(id) {
@@ -11,10 +12,15 @@ module.exports = {
 	async execute(client, guildServer, args) {
         guild = guildServer;
 
-        client.user.setActivity(args[0]);
+        let message = "";
+        for (i = 0; i < args.length; i++) {
+            message += ` ${args[i]}`;
+        }
+
+        client.user.setActivity(message);
         
-        let channel2 = get_channel("761726189055508480");
-        channel2.send(`Changed my status to ${args[0]}`);
-        console.log(`Changed status to ${args[0]}`);
+        let channel2 = get_channel(puppetMaster);
+        channel2.send(`Changed my status to ${message}`);
+        console.log(`Changed status to ${message}`);
 	},
 };

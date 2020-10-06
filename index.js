@@ -9,37 +9,28 @@ const rss = require('./rss');
 const setup = require('./setup');
 
 const config = require('./config.json');
-const { prefix } = require('./config.json');
+const prefix = config.prefix;
 
-const mariadb = require('mariadb');
-const pool = mariadb.createPool({
-    host: 'localhost', 
-    database: 'teste', 
-    user:'root', 
-    password: '123'
-});
+let db = require('./database.js');
 
 const token = 'NzYwODcyOTUxNTkwNTUxNTYy.X3SYJw.5Ig4YHVBg1rhYKa6WxyXwx0gT5E';
 
-const subscriptionChannelID = config.channels.subscribe; // #welcome channel ID (this is monitored for reactions)
 const roleSelectionEmoji = config.roleSelectionEmoji; // Emoji identifier used for role assignment
-const msg_roles = config.msg_roles; // Message ID vs Role ID mapping
+const subscriptionChannelID = config.channels.subscribe; // #welcome channel ID (this is monitored for reactions)
 
 var guild;
-const guildID = '763017798733529108';
-
-const testing_id = '757019523252748351';
-const bodCommands_id = '756527548862693396';
+const guildID = config.guildID;
 
 function get_channel(id) {
     return guild.channels.cache.get(id);
 }
 
 client.on("ready", async() => {
+    await db.createPool();
     client.user.setActivity("0.75");
     
     guild = await client.guilds.cache.get(guildID);
-    
+
     for (const file of commandFiles) {
         const command = require(`./commands/${file}`);
         client.commands.set(command.name, command);
@@ -47,6 +38,7 @@ client.on("ready", async() => {
     
     console.log(`Logged in as ${client.user.tag}`);
     
+    /*
     // TODO: REMOVE THIS
     guild.channels.cache.forEach(channel => {
         if(channel.type != 'category'){
@@ -68,10 +60,11 @@ client.on("ready", async() => {
             console.log(`Deleting role ${role.name}`);    
             role.delete().catch(console.error);
         }
-    });
+    });*/
     
-   await setup.setup_server(guild, pool);
-   
+    // await setup.setup_server(guild);
+    rss.start(guild);
+    
    // TODO: END REMOVE
    
    //TODO: Get this working
@@ -82,7 +75,6 @@ client.on("ready", async() => {
    .catch(console.error);
    
    
-   //rss.start(guild);
    */
 }); 
 
@@ -96,7 +88,7 @@ client.on('messageReactionAdd', async(reaction, user) => {
         // Assign role when the chosen reaction is selected
         if (reaction.emoji.identifier === roleSelectionEmoji) {
             const member = await guild.member(user);
-            const role_id = msg_roles[reaction.message.id];
+            const role_id = await db.getRole(reaction.message.id);
     
             // Ensures role exists
             if (role_id === undefined) return;
@@ -112,8 +104,6 @@ client.on('messageReactionAdd', async(reaction, user) => {
 
 client.on('messageReactionRemove', async(reaction, user) => {
 
-    return;
-
     // Only process reactions from subscription channel
     if (reaction.message.channel.id !== subscriptionChannelID) return;
 
@@ -123,7 +113,7 @@ client.on('messageReactionRemove', async(reaction, user) => {
     // Assign role when the chosen reaction is selected
     if (reaction.emoji.identifier === roleSelectionEmoji) {
         const member = await guild.member(user);
-        const role_id = msg_roles[reaction.message.id];
+        const role_id = await db.getRole(reaction.message.id);
 
         // Ensures role exists
         if (role_id === undefined) return;
@@ -135,7 +125,7 @@ client.on('messageReactionRemove', async(reaction, user) => {
 
 client.on('message', message => {
 
-    if (!message.content.startsWith(prefix) || message.channel.id != 761726189055508480 || !message.member.roles._roles.has("761717358078328842") || message.author.bot) return;
+    if (!message.content.startsWith(prefix) || message.channel.id != config.channels.puppetMaster || !message.member.roles._roles.has(config.roleStaff) || message.author.bot) return;
 
 	const args = message.content.slice(prefix.length).trim().split(/ +/);
     const command = args.shift().toLowerCase();
@@ -148,14 +138,6 @@ client.on('message', message => {
         console.error(error);
         message.reply('there was an error trying to execute that command!');
     }
-});
-
-client.on('message', msg => {
-    return;
-
-    if(msg.author.bot) return; // ignore bot messages
-
-    console.log(`Got message: ${msg.content}`);
 });
 
 client.login(token);

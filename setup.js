@@ -1,11 +1,12 @@
 let Discord = require("discord.js");
 const config = require('./config.json');
+
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const { Guild, Permissions, DiscordAPIError} = require("discord.js");
+
 let randomColor = require('randomcolor');
 
-const mariadb = require('mariadb');
-let pool;
+let db = require('./database.js');
 
 let GET_DEGREES_URL = "https://fenix.tecnico.ulisboa.pt/api/fenix/v1/degrees"
 let GET_COURSES_URL = "https://fenix.tecnico.ulisboa.pt/api/fenix/v1/degrees/{}/courses?academicTerm={}"
@@ -22,7 +23,6 @@ let excludedCourses = [
     "Dissertação - Mestrado em Engenharia Informática e de Computadores",
 ];
 
-
 // config objects
 let enrollment_mappings = {}
 let announcementsCategories = {}
@@ -30,7 +30,6 @@ let discussionCategories = {}
 let degreeRoles = []
 
 let roles = {}
-
 
 const permissions = [
     Permissions.FLAGS.ADMINISTRATOR,
@@ -75,91 +74,8 @@ function generate_permissions(roleId, allowed) {
     };
 }
 
-async function createTables() {
-    let conn;
-    try {
-        conn = await pool.getConnection();
-        await conn.query('CREATE OR REPLACE TABLE courses ' + 
-        '(' +
-            'ist_id VARCHAR(32) NOT NULL,' +
-            'name VARCHAR(128) NOT NULL,' +
-            'fenix_acronym VARCHAR(64) NOT NULL,' +
-            'custom_acronym VARCHAR(16) PRIMARY KEY,' +
-            'degree ENUM(\'LEIC-A\', \'LEIC-T\', \'MEIC\'),' +
-            'academic_year VARCHAR(16) NOT NULL,' +
-            'academic_term VARCHAR(1) NOT NULL,' +
-            'announcement_channel_id VARCHAR(32) NOT NULL UNIQUE KEY,' +
-            'rss_link VARCHAR(128) NOT NULL' +
-        ')');
-        
-        await conn.query('CREATE OR REPLACE TABLE roles ' +
-        '(' +
-            'discord_id VARCHAR(32) PRIMARY KEY,' +
-            'name VARCHAR(128) NOT NULL UNIQUE KEY,' +
-            'color CHAR(6) NOT NULL,' +
-            'subscription_message_id VARCHAR(32) NOT NULL UNIQUE KEY,' +
-            'course_custom_acronym VARCHAR(16) NOT NULL UNIQUE KEY,' +
-        
-            'CONSTRAINT fk_roles_courses ' +
-                'FOREIGN KEY (course_custom_acronym) REFERENCES courses(custom_acronym) ' +
-                'ON DELETE RESTRICT ' +
-                'ON UPDATE RESTRICT' +
-        ')');
-
-    } catch (err) {
-        console.log(err);
-    } finally {
-        if (conn) conn.release(); //release to pool
-    }
-}
-
-async function insertCourse(ist_id, name, fenix_acronym, custom_acronym, degree, academic_year, academic_term, announcement_channel_id, rss_link) {
-    let conn;
-    try {
-        conn = await pool.getConnection();
-        await conn.query('INSERT INTO courses VALUES' + 
-        '(\'' + 
-            ist_id + '\', \'' +
-            name + '\', \'' +
-            fenix_acronym + '\', \'' +
-            custom_acronym + '\', \'' +
-            degree + '\', \'' +
-            academic_year + '\', \'' +
-            academic_term + '\', \'' +
-            announcement_channel_id + '\', \'' +
-            rss_link + 
-        '\')');
-
-    } catch (err) {
-        console.log(err);
-    } finally {
-        if (conn) conn.release(); //release to pool
-    }
-}
-
-async function insertRole(discord_id, name, color, subscription_message_id, course_id) {
-    let conn;
-    try {
-        conn = await pool.getConnection();
-        await conn.query('INSERT INTO roles VALUES' + 
-        '(\'' + 
-            discord_id + '\', \'' +
-            name + '\', \'' +
-            color + '\', \'' +
-            subscription_message_id + '\', \'' +
-            course_id +
-        '\')');
-
-    } catch (err) {
-        console.log(err);
-    } finally {
-        if (conn) conn.release(); //release to pool
-    }
-}
-
-async function setup_server(serverGuild, existingPool) {
-    pool = existingPool;
-    await createTables();
+async function setup_server(serverGuild) {
+    await db.createTables();
 
     // TODO: CLEAR SERVER SETTINGS
     console.log("Setting up server");
@@ -388,18 +304,16 @@ async function setup_server(serverGuild, existingPool) {
                     ])
                 ]
             });
-            
+
             if (courseRoleName.charAt(courseRoleName.length -1) == "-") courseRoleName = courseRoleName.slice(0,-1);
             // TODO: arranjar o custom acronym (está a courseRoleName)
-            await insertCourse(course.id, course.name, course.acronym, courseRoleName, degreeRoleName, "", course.term, announcementChannel.id, course.rss);
-            await insertRole(courseRole.id, courseRoleName, courseRole.color, message.id, courseRoleName);
+            await db.insertCourse(course.id, course.name, course.acronym, courseRoleName, degreeRoleName, "", course.term, announcementChannel.id, course.rss);
+            await db.insertRole(courseRole.id, courseRoleName, courseRole.color, message.id, courseRoleName);
         }
 
         courses_db[degreeRoleName] = courses;
     }
 
-    // TODO: Uncomment this
-    /*
     await create_RNL_section(serverGuild, everyoneRoleId);
     await create_Arco_section(serverGuild, everyoneRoleId);
     await create_student_group_section(serverGuild, 'NEIIST', '♦️', '#f09d30', everyoneRoleId);
@@ -407,7 +321,6 @@ async function setup_server(serverGuild, existingPool) {
     await create_student_group_section(serverGuild, 'GCE', '💼', '#00d3ff', everyoneRoleId);
     await create_student_group_section(serverGuild, 'RNL-Admin', '💻', '#000000', everyoneRoleId);
     await create_student_group_section(serverGuild, 'Praxe', '👥', '#666666', everyoneRoleId);
-    */
 
     console.log(enrollment_mappings);
     console.log(courses_db);
@@ -495,9 +408,15 @@ function get_acronym(name, acronym) {
         "Opção Livre 3": "OL3",
         "Portfolio Pessoal 1": "PP1",
         "Portfolio Pessoal 2": "PP2",
-        "Linguagens de Programação": "LingP",
-        "Aprendizagem": "Apr",
+        "Análise e Integração de Dados": "AID",
+        "Aprendizagem": "Aprendizagem",
         "Bioinformática / Biologia Computacional": "BioInf",
+        "Desenvolvimento de Aplicações Distribuídas": "DAD",
+        "Design de Jogos": "DJ",
+        "Fundamentos de Sistemas de Informação": "FSI",
+        "Planeamento, Aprendizagem e Decisão Inteligente": "PADI",
+        "Segurança em Software": "SSof",
+        "Linguagens de Programação": "LingP",
         "Dissertação - Mestrado em Engenharia Informática e de Computadores": "Dissert",
         "Projecto de Mestrado em Engenharia Informática e de Computadores": "ProjTese"
     }
@@ -508,7 +427,6 @@ function get_acronym(name, acronym) {
         return acronym.replace(/[\s0-9a-z]/g, ''); // remove lowercase and digits
     }
 }
-
 
 function get_academic_year(separator) {
     let now = new Date();
@@ -885,23 +803,4 @@ async function send_initial_messages(rulesText, welcomeText, degreeText, staffRo
 module.exports.create_channel = create_channel;
 module.exports.setup_server = setup_server;
 
-// TODO: REMOVE WHEN NOT NEEDED
-/*
-async function setup() {
-    var courses = ["FP", "IAC", "IEI", "AL", "CDI-I", "IAED", "LP", "MD", "CDI-II", "SO", "PO", "ACED", "MO", "Ges", "ASA", "IPM", "TC", "EO", "PE", "BD", "CG", "IA", "OC", "RC", "AMS", "Compiladores", "CS", "ES", "SD"];
-
-    var instructions = "Reage com :raised_hand: na mensagem da respetiva cadeira para teres acesso ao seu canal de discussão e receberes notificações dos anúncios dessa cadeira. Para reverter a ação, basta retirar a reação na mensagem correspondente.";
-    
-    let subscriptionChannel = get_channel(subscriptionChannelID);
-    for(let course of courses) {
-        // console.log(`[${course}]`);
-        let message = await subscriptionChannel.send(`[${course}]`);
-        message.react(roleSelectionEmoji);
-        console.log(`${course}: ${message.id}`);
-    }
-
-    // console.log(instructions);
-    subscriptionChannel.send(instructions);
-    
-}
-*/
+// TODO: REMOVE WHEN NOT NEEDED var courses = ["FP", "IAC", "IEI", "AL", "CDI-I", "IAED", "LP", "MD", "CDI-II", "SO", "PO", "ACED", "MO", "Ges", "ASA", "IPM", "TC", "EO", "PE", "BD", "CG", "IA", "OC", "RC", "AMS", "Compiladores", "CS", "ES", "SD"];
