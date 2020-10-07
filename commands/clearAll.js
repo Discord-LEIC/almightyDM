@@ -1,5 +1,5 @@
-const courses = require('../courses.json');
-
+const puppetMaster = require('../config.json').channels.puppetMaster;
+let db = require('../database.js');
 var guild;
 
 function get_channel(id) {
@@ -12,16 +12,15 @@ module.exports = {
     usage: '$$$clearAll',
 	async execute(client, guildServer, args) {
         guild = guildServer;
-        
-        for (campus in courses) {
-            for (key in courses[campus]) {
-                let channel = get_channel(courses[campus][key].announcements.slice(2,).slice(0,-1));
-                let messages = await channel.messages.fetch( {limit: 100} );
-                channel.bulkDelete(messages);
-            }
-        }
+        const courses = await db.getCourses();
 
-        channel = get_channel("761726189055508480");
+        for (let i = 0; i < courses.length; i++) {
+            let channel = get_channel(courses[i].announcement_channel_id);
+            let messages = await channel.messages.fetch( {limit: 100} );
+            channel.bulkDelete(messages);
+        } 
+
+        channel = get_channel(puppetMaster);
         channel.send("Cleared all announcements channels");
         console.log("Cleaning all announcements channels");
 	},

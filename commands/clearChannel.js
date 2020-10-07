@@ -1,3 +1,4 @@
+const puppetMaster = require('../config.json').channels.puppetMaster;
 var guild;
 
 function get_channel(id) {
@@ -15,7 +16,7 @@ module.exports = {
         let messages = await channel.messages.fetch( {limit: 100} );
         channel.bulkDelete(messages);
 
-        let channel2 = get_channel("761726189055508480");
+        let channel2 = get_channel(puppetMaster);
         channel2.send(`Cleared all announcements for channel ${channel.name}`);
         console.log(`Cleaning all announcements for channel ${channel.name}`);
 	},

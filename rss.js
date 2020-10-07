@@ -1,12 +1,10 @@
 const Discord = require("discord.js");
-//const courses = require('./beta_courses.json');
 
 var CronJob = require('cron').CronJob;
 let Parser = require('rss-parser');
 let parser = new Parser();
 
-const testing_id = '757019523252748351';
-
+let db = require('./database.js');
 var guild;
 
 function get_channel(id) {
@@ -70,9 +68,13 @@ async function formatDate(date) {
 }
 
 async function format_feed_entry(course, entry) {
+    let acronym = course.custom_acronym;
+    if (course.degree == 'LEIC-A' || course.degree == 'LEIC-T') { 
+        acronym = course.fenix_acronym; 
+    }
 
     const embed = new Discord.MessageEmbed()
-        .setTitle(`[${course.acronym}] ${await strip_html(entry.title)}`)
+        .setTitle(`[${acronym}] ${await strip_html(entry.title)}`)
         //.setColor(course.color)
         .setDescription(await formatDate(entry.pubDate) + await strip_html(entry.content.substring(0, 2000)))
         .setURL(entry.guid)
@@ -86,36 +88,37 @@ async function format_feed_entry(course, entry) {
 
 async function start(guildServer) {
     guild = guildServer;
+    courses = await db.getCourses();
 
-    var job = new CronJob('0 0,10,20,30,40,50 * * * *', async () => {
+    let i = 0;
+    var job = new CronJob('*/5 * * * * *', async () => {
         let now = new Date();
         console.log(`[${now}] Updating RSS feeds`);
-        for (campus in courses) {
-            for (key in courses[campus]) {
-                course = courses[campus][key];
-                console.log(`[+] Fetching ${campus}-${course.acronym} at ${course.rss}`);
 
-                let feed = await parser.parseURL(course.rss).catch(console.error);
-                feed.items.sort((a, b) => {
-                    return (new Date(b.pubDate)).getTime() - (new Date(a.pubDate)).getTime();
-                });
+        i += 1 % courses.length;
+        let course = courses[i]; 
+        console.log(`[+] Fetching ${course.degree}-${course.custom_acronym} at ${course.rss_link}`);
+
+        let feed = await parser.parseURL(course.rss_link).catch(console.error);
+        feed.items.sort((a, b) => {
+            return (new Date(b.pubDate)).getTime() - (new Date(a.pubDate)).getTime();
+        });
                 
-                let channel = get_channel(course.announcements.slice(2,).slice(0,-1));
+        let channel = get_channel(course.announcement_channel_id);
                 
-                let index = feed.items.length; 
-                await channel.messages.fetch({ limit: 1 }).then(messages => {
-                    if (messages.first() !== undefined) {
-                        let lastMessageUrl = messages.first().embeds[0].url;
-                        index = feed.items.findIndex(item => { return item.guid.toString() === lastMessageUrl.toString(); });    
-                    }
-                })
-                .catch(console.error);
-                
-                for (let i = index - 1; i >= 0; i--) {
-                    channel.send(await format_feed_entry(course, feed.items[i]));
-                }
-            }            
+        let index = feed.items.length; 
+        await channel.messages.fetch({ limit: 1 }).then(messages => {
+            if (messages.first() !== undefined) {
+                let lastMessageUrl = messages.first().embeds[0].url;
+                index = feed.items.findIndex(item => { return item.guid.toString() === lastMessageUrl.toString(); });    
+            }
+        })
+        .catch(console.error);
+            
+        for (let i = index - 1; i >= 0; i--) {
+            channel.send(await format_feed_entry(course, feed.items[i]));
         }
+        // INSERT ANNOUNCEMENT DB    
     }, null, true);
 
     job.start();

@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+const puppetMaster = require('../config.json').channels.puppetMaster;
 
 var guild;
 
@@ -11,7 +12,7 @@ module.exports = {
     description: "Returns all commands, or one specific command info",
     async execute(client, guildServer, args) {
         guild = guildServer;
-        let channel = get_channel("761726189055508480");
+        let channel = get_channel(puppetMaster);
 
         if (args[0]) {
             return getCMD(client, channel, args[0]);
@@ -29,7 +30,11 @@ function getAll(client, channel) {
             .map(cmd => `- \`${cmd.name}\``)
             .join("\n");
 
-    return channel.send(embed.setDescription(commands));
+    embed.setTitle("Available commands")
+         .setFooter("$$$help <command> for more info")
+         .setDescription(commands);
+
+    return channel.send(embed);
 }
 
 function getCMD(client, channel, input) {
