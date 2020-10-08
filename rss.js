@@ -4,6 +4,8 @@ var CronJob = require('cron').CronJob;
 let Parser = require('rss-parser');
 let parser = new Parser();
 
+const crypto = require('crypto');
+
 let db = require('./database.js');
 var guild;
 
@@ -75,7 +77,7 @@ async function format_feed_entry(course, entry) {
 
     const embed = new Discord.MessageEmbed()
         .setTitle(`[${acronym}] ${await strip_html(entry.title)}`)
-        //.setColor(course.color)
+        .setColor(course.color)
         .setDescription(await formatDate(entry.pubDate) + await strip_html(entry.content.substring(0, 2000)))
         .setURL(entry.guid)
         .setAuthor(entry.author.replace(/(.*@.* \(|\))/gi, ''), `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png`)
@@ -116,9 +118,17 @@ async function start(guildServer) {
         .catch(console.error);
             
         for (let i = index - 1; i >= 0; i--) {
-            channel.send(await format_feed_entry(course, feed.items[i]));
+            let announcement = feed.items[i];
+            let hash = crypto.createHash('sha1').update(announcement.content).digest('hex');       
+            let split = announcement.guid.split('#'); 
+            let link = "";
+            let id = split[1];
+            for (let i = 0; i < split.length - 1; i++) { link += split[i]; }
+
+            db.insertAnnouncement(id, announcement.pubDate, link, announcement.author, announcement.title, hash, course.custom_acronym);
+            channel.send(await format_feed_entry(course, announcement));
         }
-        // INSERT ANNOUNCEMENT DB    
+
     }, null, true);
 
     job.start();

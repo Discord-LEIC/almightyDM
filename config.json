@@ -1,8 +1,10 @@
 {
     "prefix": "$$$",
     "pinner": "pushpin",
-    "guildID": "763155810075279381",
+    "guildID": "763419179226759188",
     "roleSelectionEmoji": "%E2%9C%8B",
+    "reactionEmoji": "📌",
+    "reactionsCount": 3,
     "roleStaff": "763155876441620492",
     "channels": {
         "subscribe": "763156686676426752",

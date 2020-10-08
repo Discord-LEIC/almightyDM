@@ -61,7 +61,7 @@ client.on("ready", async() => {
             role.delete().catch(console.error);
         }
     });*/
-    
+
     // await setup.setup_server(guild);
     rss.start(guild);
     
@@ -97,7 +97,7 @@ client.on('messageReactionAdd', async(reaction, user) => {
             member.roles.add(role_id);
         }
 
-    } else if (reaction.emoji.toString() === "📌" && reaction.count >= 3 && !reaction.message.pinned) {
+    } else if (reaction.emoji.toString() === config.reactionEmoji && reaction.count >= config.reactionsCount && !reaction.message.pinned) {
         await reaction.message.pin();
     }
 });

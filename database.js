@@ -30,9 +30,9 @@ async function createTables() {
                 ON DELETE RESTRICT \
                 ON UPDATE RESTRICT)`);
         
-        await conn.query(`CREATE OR REPLACE TABLE announcements (guid VARCHAR(256) PRIMARY KEY, ts TIMESTAMP NOT NULL, \
-            permalink VARCHAR(256) NOT NULL UNIQUE KEY, author VARCHAR(256) NOT NULL, title VARCHAR(256) NOT NULL, \
-            description_hash VARCHAR(64) NOT NULL, course_custom_acronym VARCHAR(32) NOT NULL
+        await conn.query(`CREATE OR REPLACE TABLE announcements (guid VARCHAR(32) PRIMARY KEY, ts TIMESTAMP NOT NULL, \
+            permalink VARCHAR(128) NOT NULL UNIQUE KEY, author VARCHAR(128) NOT NULL, title VARCHAR(128) NOT NULL, \
+            description_hash VARCHAR(64) NOT NULL, course_custom_acronym VARCHAR(32) NOT NULL, \
             CONSTRAINT fk_announcements_courses \
                 FOREIGN KEY (course_custom_acronym) REFERENCES courses(custom_acronym) \
                 ON DELETE RESTRICT \
@@ -91,7 +91,7 @@ async function insertAnnouncement(guid, ts, permalink, author, title, descriptio
     try {
         conn = await pool.getConnection();
         await conn.query(`INSERT INTO announcements VALUES ('${guid}', '${ts}', '${permalink}', \
-            '${author}', '${title}, '${description_hash}', '${course_custom_acronym}')`);
+            '${author}', '${title}', '${description_hash}', '${course_custom_acronym}')`);
 
     } catch (err) {
         console.log(err);

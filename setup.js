@@ -307,7 +307,9 @@ async function setup_server(serverGuild) {
 
             if (courseRoleName.charAt(courseRoleName.length -1) == "-") courseRoleName = courseRoleName.slice(0,-1);
             // TODO: arranjar o custom acronym (está a courseRoleName)
-            await db.insertCourse(course.id, course.name, course.acronym, courseRoleName, degreeRoleName, "", course.term, announcementChannel.id, course.rss);
+            // TODO: Ir buscar a cor
+            let color = "";
+            await db.insertCourse(course.id, course.name, color, course.acronym, courseRoleName, degreeRoleName, "", course.term, announcementChannel.id, course.rss);
             await db.insertRole(courseRole.id, courseRoleName, courseRole.color, message.id, courseRoleName);
         }
 
