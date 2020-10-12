@@ -1,13 +1,15 @@
 {
     "prefix": "$$$",
     "pinner": "pushpin",
-    "guildID": "763419179226759188",
+    "guildID": "689545577649799179",
     "roleSelectionEmoji": "%E2%9C%8B",
     "reactionEmoji": "📌",
     "reactionsCount": 3,
     "roleStaff": "763155876441620492",
+    "welcomeMessageID": "760503486843453452",
     "channels": {
-        "subscribe": "763156686676426752",
-        "puppetMaster": "763156679432077332"
+        "subscribe": "757022573765722152",
+        "puppetMaster": "763156679432077332",
+        "welcomeChannelID": "689554658481537034"
     }
 }
