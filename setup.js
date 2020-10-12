@@ -66,6 +66,8 @@ const permissions = [
 ];
 
 function generate_permissions(roleId, allowed) {
+    // allows allowed
+    // denies everything else
     return {
         'id': roleId,
         'type': 'role',
@@ -400,6 +402,7 @@ function get_courses(degreeId) {
 }
 
 function get_acronym(name, acronym) {
+    // TODO: check this
     let customAcronyms = {
         "Cálculo Diferencial e Integral I": "CDI-I",
         "Cálculo Diferencial e Integral II": "CDI-II",

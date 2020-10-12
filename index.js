@@ -13,7 +13,7 @@ const prefix = config.prefix;
 
 let db = require('./database.js');
 
-const token = 'NzYwODcyOTUxNTkwNTUxNTYy.X3SYJw.5Ig4YHVBg1rhYKa6WxyXwx0gT5E';
+const token = 'NzYwODcyOTUxNTkwNTUxNTYy.X3SYJw.5Ig4YHVBg1rhYKa6WxyXwx0gT5E'; //sandbox token TODO: remove
 
 const roleSelectionEmoji = config.roleSelectionEmoji; // Emoji identifier used for role assignment
 const subscriptionChannelID = config.channels.subscribe; // #welcome channel ID (this is monitored for reactions)
