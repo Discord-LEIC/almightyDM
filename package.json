@@ -12,6 +12,8 @@
     "dependencies": {
         "cron": "^1.8.2",
         "discord.js": "^12.3.1",
+        "mariadb": "^2.4.2",
+        "randomcolor": "^0.6.2",
         "rss-parser": "^3.9.0",
         "xmlhttprequest": "^1.8.0"
     }
