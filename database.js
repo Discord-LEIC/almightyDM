@@ -66,7 +66,7 @@ async function createTables() {
                 'CONSTRAINT fk_announcements_courses ',
                     'FOREIGN KEY (course_custom_acronym) REFERENCES courses(custom_acronym) ',
                     'ON DELETE RESTRICT ',
-                    'ON UPDATE RESTRICT ',
+                    'ON UPDATE RESTRICT',
             ')'
         ].join('');
 
