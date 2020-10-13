@@ -60,9 +60,10 @@ client.on("ready", async() => {
             console.log(`Deleting role ${role.name}`);    
             role.delete().catch(console.error);
         }
-    });*/
+    });
 
-    // await setup.setup_server(guild);
+    await setup.setup_server(guild);
+    */
     rss.start(guild);
     
    // TODO: END REMOVE
