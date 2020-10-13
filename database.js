@@ -45,30 +45,27 @@ async function createTables() {
     }
 }
 
-async function insertStudent(ist_id, discord_id, name, birthday) {
-    let conn;
-    try {
-        conn = await pool.getConnection();
-        await conn.query(`INSERT INTO students VALUES ('${ist_id}', '${discord_id}', '${name}', '${birthday}')`);
-
-    } catch (err) {
-        console.log(err);
-    } finally {
-        if (conn) conn.release(); //release to pool
-    }
-}
-
 async function insertCourse(ist_id, name, color, fenix_acronym, custom_acronym, degree, academic_year, academic_term, announcement_channel_id, rss_link) {
     let conn;
     try {
         conn = await pool.getConnection();
-        await conn.query(`INSERT INTO courses VALUES ('${ist_id}', '${name}', '${color}', '${fenix_acronym}', '${custom_acronym}', \
-            '${degree}', '${academic_year}', '${academic_term}', '${announcement_channel_id}', '${rss_link}')`);
+        await conn.query(
+        [
+            'INSERT INTO courses (',
+                'ist_id, name, color, fenix_acronym, ',
+                'custom_acronym, degree, academic_year, ',
+                'academic_term, announcement_channel_id, rss_link',
+            ') VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+        ].join(''),
+                [ist_id, name, color, fenix_acronym,
+                custom_acronym, degree, academic_year,
+                academic_term, announcement_channel_id, rss_link]
+        );
 
     } catch (err) {
         console.log(err);
     } finally {
-        if (conn) conn.release(); //release to pool
+        if (conn) conn.release();
     }
 }
 
@@ -76,9 +73,16 @@ async function insertRole(discord_id, name, color, subscription_message_id, cour
     let conn;
     try {
         conn = await pool.getConnection();
-        await conn.query(`INSERT INTO roles VALUES ('${discord_id}', '${name}', '${color}', \
-            '${subscription_message_id}', '${course_custom_acronym}')`);
-
+        await conn.query(
+            [
+                'INSERT INTO roles (',
+                    'discord_id, name, color, ',
+                    'subscription_message_id, course_custom_acronym',
+                ') VALUE (?, ?, ?, ?, ?)'
+            ].join(''),
+                    [discord_id, name, color,
+                    subscription_message_id, course_custom_acronym]
+            );
     } catch (err) {
         console.log(err);
     } finally {
@@ -90,9 +94,16 @@ async function insertAnnouncement(guid, ts, permalink, author, title, descriptio
     let conn;
     try {
         conn = await pool.getConnection();
-        await conn.query(`INSERT INTO announcements VALUES ('${guid}', '${ts}', '${permalink}', \
-            '${author}', '${title}', '${description_hash}', '${course_custom_acronym}')`);
-
+        await conn.query(
+            [
+                'INSERT INTO announcements (',
+                    'guid, ts, permalink, author, title, ',
+                    'description_hash, course_custom_acronym',
+                ') VALUE (?, ?, ?, ?, ?)'
+            ].join(''),
+                    [guid, ts, permalink, author, title,
+                    description_hash, course_custom_acronym]
+            );
     } catch (err) {
         console.log(err);
     } finally {
@@ -104,8 +115,13 @@ async function getCourses() {
     let conn;
     try {
         conn = await pool.getConnection();
-        result = await conn.query(`SELECT degree, fenix_acronym, custom_acronym, rss_link, \
-            announcement_channel_id, color FROM courses`);
+        result = await conn.query(
+            [
+                'SELECT ',
+                    'degree, fenix_acronym, custom_acronym, rss_link,',
+                    'announcement_channel_id, color ',
+                'FROM courses'
+            ].join(''));
         return result;
 
     } catch (err) {
@@ -119,8 +135,14 @@ async function getRole(subscription_message_id) {
     let conn;
     try {
         conn = await pool.getConnection();
-        result = await conn.query(`SELECT discord_id FROM roles WHERE \ 
-            subscription_message_id = ${subscription_message_id}`);
+        result = await conn.query(
+            [
+                'SELECT discord_id ',
+                'FROM roles ',
+                'WHERE subscription_message_id = ?'
+            ].join(''),
+                [subscription_message_id]
+            );
         return result;
 
     } catch (err) {
