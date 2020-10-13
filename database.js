@@ -100,21 +100,6 @@ async function insertAnnouncement(guid, ts, permalink, author, title, descriptio
     }
 }
 
-async function getStudent(ist_id) {
-    let conn;
-    try {
-        conn = await pool.getConnection();
-        result = await conn.query(`SELECT EXISTS (SELECT * FROM students WHERE \ 
-            ist_id = ${ist_id})`);
-        return result;
-
-    } catch (err) {
-        console.log(err);
-    } finally {
-        if (conn) conn.release(); //release to pool
-    }
-}
-
 async function getCourses() {
     let conn;
     try {
@@ -145,15 +130,30 @@ async function getRole(subscription_message_id) {
     }
 }
 
+async function is_registered(discordId) {
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        result = await conn.query(`SELECT EXISTS (SELECT * FROM students WHERE \ 
+            discord_id = ?)`, [discordId]);
+        return result;
+
+    } catch (err) {
+        console.log(err);
+    } finally {
+        if (conn) conn.release(); //release to pool
+    }
+}
+
 module.exports = {
-    createPool: createPool,
-    createTables: createTables,
-    insertStudent: insertStudent,
-    insertCourse: insertCourse,
-    insertRole: insertRole,
-    insertAnnouncement: insertAnnouncement,
-    getStudent: getStudent,
-    getCourses: getCourses,
-    getRole: getRole
+    createPool,
+    createTables,
+    insertStudent,
+    insertCourse,
+    insertRole,
+    insertAnnouncement,
+    getCourses,
+    getRole,
+    is_registered
   };
 

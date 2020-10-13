@@ -104,6 +104,15 @@ client.on('messageReactionAdd', async(reaction, user) => {
 
     } else if(reaction.message.id === welcomeMessageID
         && reaction.emoji.identifier === roleSelectionEmoji) {
+            if(await db.is_registered(user.id)) {
+                // grant student role
+                const member = await guild.member(user);
+                // const role_id = await db.getRole(reaction.message.id);
+                // if (role_id !== undefined) throw new Error("Undefined role");
+                member.roles.add("689962857655566380");
+            } else {
+                reaction.users.remove(user);
+            }
             // if user in database: grant @student
             // else: remove ~~reaction~~ FROM SERVER >:(
         console.log("Got new sign-up in #welcome");
