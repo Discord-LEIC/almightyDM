@@ -170,7 +170,6 @@ async function is_registered(discordId) {
 module.exports = {
     createPool,
     createTables,
-    insertStudent,
     insertCourse,
     insertRole,
     insertAnnouncement,
