@@ -71,7 +71,7 @@ client.on('messageReactionAdd', async(reaction, user) => {
             // Ensures role exists
             if (role_id === undefined) return;
     
-            console.log(`${member.user.username} subscribed to ${guild.roles.cache.get(role_id).name}`);
+            console.log(`${user.username} subscribed to ${guild.roles.cache.get(role_id).name}`);
             member.roles.add(role_id);
         }
 
