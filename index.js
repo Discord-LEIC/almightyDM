@@ -28,7 +28,7 @@ function get_channel(id) {
 }
 
 client.on("ready", async() => {
-    // await db.createPool();
+    await db.createPool();
     client.user.setActivity("0.75 Roulette");
     
     guild = await client.guilds.cache.get(guildID);
@@ -39,47 +39,20 @@ client.on("ready", async() => {
         client.commands.set(command.name, command);
     }
     
-    console.log(`Logged in as ${client.user.tag}`);
+    console.log(`Logged in as ${client.user.tag} at ${guild.name}`);
     
-    /*
-    // TODO: REMOVE THIS
-    guild.channels.cache.forEach(channel => {
-        if(channel.type != 'category'){
-            console.log(`Deleting ${channel.name}`);
-            channel.delete();
-        }
-    });
-    
-    //TODO: Hardcoded mess, please kill.
-    guild.channels.cache.forEach(channel => {
-        if(channel.type == 'category'){
-            console.log(`Deleting ${channel.name}`);
-            channel.delete();
-        }
-    });
-    
-    guild.roles.cache.forEach(role => {
-        if(role.name != '@everyone' & role.name !='bot' & role.name != 'staff' & role.name != 'admin'){
-            console.log(`Deleting role ${role.name}`);    
-            role.delete().catch(console.error);
-        }
-    });*/
-
-    // await setup.setup_server(guild);
     // rss.start(guild);
     
-   // TODO: END REMOVE
+    //TODO: Get this working
    
-   //TODO: Get this working
-   
-   // Fetch subscription messages
-   const subscriptionChannel = get_channel(subscriptionChannelID);
-   subscriptionChannel.messages.fetch()
-   .catch(console.error);
+    // Fetch subscription messages
+    const subscriptionChannel = get_channel(subscriptionChannelID);
+    subscriptionChannel.messages.fetch()
+    .catch(console.error);
 
-   const welcomeChannel = get_channel(welcomeChannelID);
-   welcomeChannel.messages.fetch()
-   .catch(console.error);
+    const welcomeChannel = get_channel(welcomeChannelID);
+    welcomeChannel.messages.fetch()
+    .catch(console.error);
 
 }); 
 
@@ -113,9 +86,7 @@ client.on('messageReactionAdd', async(reaction, user) => {
             } else {
                 reaction.users.remove(user);
             }
-            // if user in database: grant @student
-            // else: remove ~~reaction~~ FROM SERVER >:(
-        console.log("Got new sign-up in #welcome");
+       	    console.log("Got new sign-up in #welcome");
     } else if (reaction.emoji.toString() === config.reactionEmoji && reaction.count >= config.reactionsCount && !reaction.message.pinned) {
         await reaction.message.pin();
     }
