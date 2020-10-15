@@ -83,10 +83,11 @@ client.on('messageReactionAdd', async(reaction, user) => {
                 // const role_id = await db.getRole(reaction.message.id);
                 // if (role_id !== undefined) throw new Error("Undefined role");
                 member.roles.add("689962857655566380");
+		console.log(`[${user.id}:${user.username}] Granting @student role`);
             } else {
                 reaction.users.remove(user);
+		console.log(`[${user.id}:${user.username}] Failed to register @student role`);
             }
-       	    console.log("Got new sign-up in #welcome");
     } else if (reaction.emoji.toString() === config.reactionEmoji && reaction.count >= config.reactionsCount && !reaction.message.pinned) {
         await reaction.message.pin();
     }

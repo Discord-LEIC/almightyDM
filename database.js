@@ -1,13 +1,19 @@
 const mariadb = require('mariadb');
+const {
+    DB_HOST,
+    DB_USER,
+    DB_NAME,
+    DB_PSWD
+} = require("./globals");
 
 let pool;
 
 async function createPool() {
-    pool = mariadb.createPool({
-        host: 'localhost', 
-        database: 'teste', 
-        user:'root', 
-        password: '123'
+    pool = await mariadb.createPool({
+        host: DB_HOST, 
+        user: DB_USER, 
+        database: DB_NAME, 
+        password: DB_PSWD
     });
 }
 
@@ -206,7 +212,7 @@ async function is_registered(discordId) {
     try {
         conn = await pool.getConnection();
         const query = [
-            "SELECT COUNT(*) as count FROM students",
+            "SELECT COUNT(*) as count FROM students ",
             "WHERE discord_id = ?"
         ].join("");
 
