@@ -117,7 +117,8 @@ async function setup_server(serverGuild) {
         'permissionOverwrites': [
             generate_permissions(everyoneRoleId, [
                 Permissions.FLAGS.VIEW_CHANNEL,
-                Permissions.FLAGS.READ_MESSAGE_HISTORY
+                Permissions.FLAGS.READ_MESSAGE_HISTORY,
+                Permissions.FLAGS.ADD_REACTIONS
             ])
         ]
     });
@@ -373,13 +374,13 @@ async function setup_server(serverGuild) {
     }
 
     //Creates channels and categories
-    await create_RNL_section(serverGuild, everyoneRoleId);
-    let arco_category = await create_Arco_section(serverGuild, everyoneRoleId);
-    await create_student_group_section(serverGuild, 'NEIIST', '🔸', '#f09d30', everyoneRoleId);
-    await create_student_group_section(serverGuild, 'SINFO', '🔹', '#295a8a', everyoneRoleId);
-    await create_student_group_section(serverGuild, 'GCE', '💼', '#00d3ff', everyoneRoleId);
-    await create_student_group_section(serverGuild, 'RNL-Admin', '💻', '#000000', everyoneRoleId);
-    await create_student_group_section(serverGuild, 'Praxe', '👥', '#666666', everyoneRoleId);
+    await create_RNL_section(serverGuild, authenticatedID, everyoneRoleId);
+    let arco_category = await create_Arco_section(serverGuild, authenticatedID, everyoneRoleId);
+    await create_student_group_section(serverGuild, 'NEIIST', '🔸', '#f09d30', authenticatedID, everyoneRoleId);
+    await create_student_group_section(serverGuild, 'SINFO', '🔹', '#295a8a', authenticatedID, everyoneRoleId);
+    await create_student_group_section(serverGuild, 'GCE', '💼', '#00d3ff', authenticatedID, everyoneRoleId);
+    await create_student_group_section(serverGuild, 'RNL-Admin', '💻', '#000000', authenticatedID, everyoneRoleId);
+    await create_student_group_section(serverGuild, 'Praxe', '👥', '#666666', authenticatedID, everyoneRoleId);
 
     //Sends the messages to the initial channels
     await send_initial_messages(rulesText, welcomeText, degreeText, yearText, faqText, staffRole, everyoneRoleId, authenticatedID);
@@ -582,7 +583,7 @@ async function create_staff_section(serverGuild, everyoneRoleId){
     });
 }
 
-async function create_RNL_section(serverGuild, everyoneRoleId){
+async function create_RNL_section(serverGuild, authenticatedID, everyoneRoleId){
     // Generate section Staff
 
     console.log(`[+] Creating the RNL Section`)
@@ -635,7 +636,7 @@ async function create_RNL_section(serverGuild, everyoneRoleId){
     });
 }
 
-async function create_Arco_section(serverGuild, everyoneRoleId){
+async function create_Arco_section(serverGuild, authenticatedID, everyoneRoleId){
     console.log(`[+] Creating the Arco Section`);
 
     let permArray = [
@@ -748,7 +749,7 @@ async function create_Arco_section(serverGuild, everyoneRoleId){
     return arcoCategory;
 }
 
-async function create_student_group_section(serverGuild, name, emote, color, everyoneRoleId){
+async function create_student_group_section(serverGuild, name, emote, color, authenticatedID, everyoneRoleId){
     let role = await create_role(serverGuild, {
         'data': {
             'name': name,
@@ -798,10 +799,12 @@ async function create_student_group_section(serverGuild, name, emote, color, eve
         'parent': category.id,
         'permissionOverwrites': [
             generate_permissions(everyoneRoleId, [
+            ]),
+            generate_permissions(authenticatedID, [
                 Permissions.FLAGS.VIEW_CHANNEL,
                 Permissions.FLAGS.READ_MESSAGE_HISTORY,
                 Permissions.FLAGS.ADD_REACTIONS
-            ]),
+            ])
         ]
     });
 
@@ -836,6 +839,7 @@ async function send_initial_messages(rulesText, welcomeText, degreeText, yearTex
         welcomeText
     );
 
+    messageENG.react(roleSelectionEmoji);
     let messagePT = await send_embeded_message(
         'Bem-vindo ao Discord oficial de [LM]EIC! (Português)',
         null,
@@ -853,6 +857,7 @@ async function send_initial_messages(rulesText, welcomeText, degreeText, yearTex
         welcomeText
     );
 
+    messagePT.react(roleSelectionEmoji);
     console.log(`[+] Sent welcome messages`);
 
     // Send rules message
