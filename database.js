@@ -266,6 +266,8 @@ async function getWelcomeChannel() {
         const args = ["welcomeChannelID"];
         
         result = await conn.query(query, args);
+        if (result != "") { result = result[0].discord_id; }
+
         return result;
 
     } catch (err) {
@@ -346,6 +348,30 @@ async function getRole(subscription_message_id) {
     }
 }
 
+async function getNewestAnnouncementTS(course_custom_acronym) {
+    let conn;
+    try {
+        conn = await pool.getConnection();
+
+        const query = [
+            'SELECT MAX(ts) as ts ',
+            'FROM announcements ',
+            'WHERE course_custom_acronym = ?'
+        ].join('');
+
+        const args = course_custom_acronym;
+
+        result = await conn.query(query, args);
+
+        return new Date(result[0].ts);
+
+    } catch (err) {
+        console.log(err);
+    } finally {
+        if (conn) conn.release(); //release to pool
+    }
+}
+
 async function is_registered(discordId) {
     let conn;
     try {
@@ -367,6 +393,24 @@ async function is_registered(discordId) {
     }
 }
 
+async function deleteAllAnnouncements() {
+    let conn;
+    try {
+        conn = await pool.getConnection();
+
+        const query = 'DELETE FROM announcements';
+
+        result = await conn.query(query);
+
+        return result;
+
+    } catch (err) {
+        console.log(err);
+    } finally {
+        if (conn) conn.release(); //release to pool
+    }
+}
+
 module.exports = {
     createPool,
     createTables,
@@ -380,6 +424,8 @@ module.exports = {
     getRoleMessages,
     getCourses,
     getRole,
+    getNewestAnnouncementTS,
+    deleteAllAnnouncements,
     is_registered
 };
 

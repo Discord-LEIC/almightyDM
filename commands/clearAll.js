@@ -20,6 +20,8 @@ module.exports = {
             channel.bulkDelete(messages);
         } 
 
+        await db.deleteAllAnnouncements();
+
         channel = get_channel(puppetMaster);
         channel.send("Cleared all announcements channels");
         console.log("Cleaning all announcements channels");

@@ -77,7 +77,7 @@ async function format_feed_entry(course, entry) {
 
     const embed = new Discord.MessageEmbed()
         .setTitle(`[${acronym}] ${await strip_html(entry.title)}`)
-        .setColor(course.color)
+        .setColor("#009de0")
         .setDescription(await formatDate(entry.pubDate) + await strip_html(entry.content.substring(0, 2000)))
         .setURL(entry.guid)
         .setAuthor(entry.author.replace(/(.*@.* \(|\))/gi, ''), `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png`)
@@ -93,39 +93,38 @@ async function start(guildServer) {
     courses = await db.getCourses();
 
     let i = 0;
-    var job = new CronJob('*/5 * * * * *', async () => {
+    var job = new CronJob('*/2 * * * * *', async () => {
         let now = new Date();
         console.log(`[${now}] Updating RSS feeds`);
 
-        i += 1 % courses.length;
+        i = (i + 1) % courses.length;
         let course = courses[i]; 
         console.log(`[+] Fetching ${course.degree}-${course.custom_acronym} at ${course.rss_link}`);
-
+        
+        let newestTS = await db.getNewestAnnouncementTS(course.custom_acronym);
+        
         let feed = await parser.parseURL(course.rss_link).catch(console.error);
-        feed.items.sort((a, b) => {
-            return (new Date(b.pubDate)).getTime() - (new Date(a.pubDate)).getTime();
-        });
-                
-        let channel = get_channel(course.announcement_channel_id);
-                
-        let index = feed.items.length; 
-        await channel.messages.fetch({ limit: 1 }).then(messages => {
-            if (messages.first() !== undefined) {
-                let lastMessageUrl = messages.first().embeds[0].url;
-                index = feed.items.findIndex(item => { return item.guid.toString() === lastMessageUrl.toString(); });    
-            }
+
+        let newAnnouncements = feed.items
+            .filter(item => {
+                return new Date(item.pubDate).getTime() > newestTS.getTime();
         })
-        .catch(console.error);
-            
-        for (let i = index - 1; i >= 0; i--) {
-            let announcement = feed.items[i];
+            .sort((a, b) => {
+                return (new Date(b.pubDate)).getTime() - (new Date(a.pubDate)).getTime();
+        });
+
+        let channel = get_channel(course.announcement_channel_id);
+                            
+        for (let i = newAnnouncements.length - 1; i >= 0; i--) {
+            let announcement = newAnnouncements[i];
             let hash = crypto.createHash('sha1').update(announcement.content).digest('hex');       
             let split = announcement.guid.split('#'); 
             let link = "";
             let id = split[1];
             for (let i = 0; i < split.length - 1; i++) { link += split[i]; }
 
-            db.insertAnnouncement(id, announcement.pubDate, link, announcement.author, announcement.title, hash, "", course.custom_acronym);
+            db.insertAnnouncement(id, new Date(announcement.pubDate), link, announcement.author, announcement.title, hash, "", course.custom_acronym);
+            
             channel.send(await format_feed_entry(course, announcement));
         }
 

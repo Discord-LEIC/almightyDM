@@ -93,7 +93,7 @@ client.on('messageReactionAdd', async(reaction, user) => {
     console.log("role: " + reaction.message.id);
 
     // Only process reactions from subscription channel
-    if (welcomeID[0].discord_id !== reaction.message.channel.id && includesChannel(reaction.message.channel.id)) {
+    if (welcomeID !== reaction.message.channel.id && includesChannel(reaction.message.channel.id)) {
         // Assign role when the chosen reaction is selected
         if (reaction.emoji.identifier === roleSelectionEmoji) {
             const member = await guild.member(user);
@@ -111,7 +111,7 @@ client.on('messageReactionAdd', async(reaction, user) => {
             member.roles.add(role_id);
         }
 
-    } else if (welcomeID[0].discord_id === reaction.message.channel.id && reaction.emoji.identifier === roleSelectionEmoji) {
+    } else if (welcomeID === reaction.message.channel.id && reaction.emoji.identifier === roleSelectionEmoji) {
             if (await db.is_registered(user.id)) {
                 // grant student role
                 const member = await guild.member(user);
@@ -133,7 +133,7 @@ client.on('messageReactionRemove', async(reaction, user) => {
     let welcomeID = await db.getWelcomeChannel();
 
     // Only process reactions from subscription channel
-    if (welcomeID[0].discord_id !== reaction.message.channel.id && !includesChannel(reaction.message.channel.id)) return;
+    if (welcomeID !== reaction.message.channel.id && !includesChannel(reaction.message.channel.id)) return;
     
     // Ignore reactions from bots
     if (user.bot) return;
