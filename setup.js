@@ -138,6 +138,8 @@ async function setup_server(serverGuild) {
             generate_permissions(everyoneRoleId, [
                 Permissions.FLAGS.VIEW_CHANNEL,
                 Permissions.FLAGS.READ_MESSAGE_HISTORY
+            ]),
+            generate_permissions(everyoneRoleId, [
             ])
         ]
     });
@@ -149,6 +151,8 @@ async function setup_server(serverGuild) {
             generate_permissions(everyoneRoleId, [
                 Permissions.FLAGS.VIEW_CHANNEL,
                 Permissions.FLAGS.READ_MESSAGE_HISTORY
+            ]),
+            generate_permissions(everyoneRoleId, [
             ])
         ]
     });
@@ -161,6 +165,8 @@ async function setup_server(serverGuild) {
                 Permissions.FLAGS.VIEW_CHANNEL,
                 Permissions.FLAGS.READ_MESSAGE_HISTORY,
                 Permissions.FLAGS.ADD_REACTIONS
+            ]),
+            generate_permissions(everyoneRoleId, [
             ])
         ]
     });
@@ -363,7 +369,7 @@ async function setup_server(serverGuild) {
     //Creates channels and categories
     await create_RNL_section(serverGuild, everyoneRoleId);
     let arco_category = await create_Arco_section(serverGuild, everyoneRoleId);
-    await create_student_group_section(serverGuild, 'NEIIST', '♦️', '#f09d30', everyoneRoleId);
+    await create_student_group_section(serverGuild, 'NEIIST', '🔸', '#f09d30', everyoneRoleId);
     await create_student_group_section(serverGuild, 'SINFO', '🔹', '#295a8a', everyoneRoleId);
     await create_student_group_section(serverGuild, 'GCE', '💼', '#00d3ff', everyoneRoleId);
     await create_student_group_section(serverGuild, 'RNL-Admin', '💻', '#000000', everyoneRoleId);
@@ -860,7 +866,7 @@ async function send_initial_messages(rulesText, welcomeText, degreeText, yearTex
         'Regras (Português)',
         null,
         `**0.** Respeita os teus colegas, tanto na forma de falar como no que dizes.\n\n\ 
-        **0.75** Respeita o Staff e as suas decisões, estamos a dar o nosso melhor\ 
+        **0.75** Respeita o Staff e as suas decisões, estamos a dar o nosso melhor.\ 
         Se surgir alguma questão/sugestão faz um <@&${staffRole.id}> ou manda uma DM (não spamem pls)\n\n\
         **1.** Evita usar os mentions gerais (<@&${everyoneRoleId}>/…)\n\n\
         **2.** Para manter as coisas organizadas, mantém as conversas nos canais apropriados\n\n\

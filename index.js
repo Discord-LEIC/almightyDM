@@ -38,7 +38,7 @@ client.on("ready", async() => {
     
     console.log(`Logged in as ${client.user.tag}`);
     
-    /*
+    
     // TODO: REMOVE THIS
     guild.channels.cache.forEach(channel => {
         if(channel.type != 'category'){
@@ -63,8 +63,8 @@ client.on("ready", async() => {
     });
 
     await setup.setup_server(guild);
-    */
-    rss.start(guild);
+    
+    //rss.start(guild);
     
    // TODO: END REMOVE
    
