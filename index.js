@@ -75,8 +75,7 @@ client.on("ready", async() => {
     // TODO: REMOVE THIS
     // clear_server();
     // await setup.setup_server(guild);
-    // return;
-    
+
     channelIDs = await fetch.fetchChannelIDs(guild, db);
     await fetch.fetchMessages();
     rss.start(guild);

@@ -125,7 +125,7 @@ async function start(guildServer) {
             let id = split[1];
             for (let i = 0; i < split.length - 1; i++) { link += split[i]; }
 
-            db.insertAnnouncement(id, announcement.pubDate, link, announcement.author, announcement.title, hash, course.custom_acronym);
+            db.insertAnnouncement(id, announcement.pubDate, link, announcement.author, announcement.title, hash, "", course.custom_acronym);
             channel.send(await format_feed_entry(course, announcement));
         }
 

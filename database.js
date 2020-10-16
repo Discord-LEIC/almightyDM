@@ -73,16 +73,19 @@ async function createTables() {
                     'ON UPDATE RESTRICT',
             ')'
         ].join('');
-
+        
         const create_announcements = [
             'CREATE OR REPLACE TABLE announcements (',
-                'guid VARCHAR(32) PRIMARY KEY, ',
+                'guid VARCHAR(32) NOT NULL, ',
                 'ts TIMESTAMP NOT NULL, ',
-                'permalink VARCHAR(128) NOT NULL UNIQUE KEY, ',
+                'permalink VARCHAR(128) NOT NULL, ',
                 'author VARCHAR(128) NOT NULL, ',
                 'title VARCHAR(128) NOT NULL, ',
                 'description_hash VARCHAR(64) NOT NULL, ',
+                'color CHAR(6) NOT NULL, ',
                 'course_custom_acronym VARCHAR(32) NOT NULL, ',
+                'PRIMARY KEY (guid, course_custom_acronym), ',
+
                 'CONSTRAINT fk_announcements_courses ',
                     'FOREIGN KEY (course_custom_acronym) REFERENCES courses(custom_acronym) ',
                     'ON DELETE RESTRICT ',
@@ -205,7 +208,7 @@ async function insertRole(discord_id, name, color, subscription_message_id, cour
     }
 }
 
-async function insertAnnouncement(guid, ts, permalink, author, title, description_hash, course_custom_acronym) {
+async function insertAnnouncement(guid, ts, permalink, author, title, description_hash, color, course_custom_acronym) {
     let conn;
     try {
         conn = await pool.getConnection();
@@ -213,12 +216,12 @@ async function insertAnnouncement(guid, ts, permalink, author, title, descriptio
         const query = [
             'INSERT INTO announcements (',
                 'guid, ts, permalink, author, title, ',
-                'description_hash, course_custom_acronym',
-            ') VALUE (?, ?, ?, ?, ?)'
+                'description_hash, color, course_custom_acronym',
+            ') VALUE (?, ?, ?, ?, ?, ?, ?, ?)'
         ].join('')
         
         const args = [guid, ts, permalink, author, title,
-            description_hash, course_custom_acronym]
+            description_hash, "#009de0", course_custom_acronym]
         
         await conn.query(query, args);
     } catch (err) {
