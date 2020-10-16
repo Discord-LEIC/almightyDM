@@ -21,6 +21,20 @@ async function createTables() {
     let conn;
     try {
         conn = await pool.getConnection();
+        const create_channels = [
+            'CREATE OR REPLACE TABLE channels (',
+                'discord_id VARCHAR(32) PRIMARY KEY, ',
+                'name VARCHAR(128) NOT NULL UNIQUE KEY',
+            ')'
+        ].join('');
+        
+        const create_role_messages = [
+            'CREATE OR REPLACE TABLE roleMessages (',
+                'discord_id VARCHAR(32) PRIMARY KEY, ',
+                'subscription_message_id VARCHAR(32) NOT NULL UNIQUE KEY',
+            ')'
+        ].join('');
+        
         const create_students = [
             'CREATE OR REPLACE TABLE students (',
                 'ist_id VARCHAR(15) PRIMARY KEY, ',
@@ -76,6 +90,8 @@ async function createTables() {
             ')'
         ].join('');
 
+        await conn.query(create_channels)
+        await conn.query(create_role_messages)
         await conn.query(create_students);
         await conn.query(create_courses);
         await conn.query(create_roles);
@@ -85,6 +101,56 @@ async function createTables() {
         console.log(err);
     } finally {
         if (conn) conn.release(); //release to pool
+    }
+}
+
+async function insertChannel(discord_id, name) {
+    let conn;
+    try {
+        conn = await pool.getConnection();
+
+        const query = [
+            'INSERT INTO channels (',
+                'discord_id, name',
+            ') VALUE (?, ?)'
+        ].join('');
+        
+        const args = [
+            discord_id, name
+        ];
+        
+        
+        await conn.query(query, args);
+
+    } catch (err) {
+        console.log(err);
+    } finally {
+        if (conn) conn.release();
+    }
+}
+
+async function insertRoleMessage(discord_id, subscription_message_id) {
+    let conn;
+    try {
+        conn = await pool.getConnection();
+
+        const query = [
+            'INSERT INTO roleMessages (',
+                'discord_id, subscription_message_id',
+            ') VALUE (?, ?)'
+        ].join('');
+        
+        const args = [
+            discord_id, subscription_message_id
+        ];
+        
+        
+        await conn.query(query, args);
+
+    } catch (err) {
+        console.log(err);
+    } finally {
+        if (conn) conn.release();
     }
 }
 
@@ -162,6 +228,74 @@ async function insertAnnouncement(guid, ts, permalink, author, title, descriptio
     }
 }
 
+async function getChannels() {
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        const query = [
+            'SELECT ',
+                'discord_id ',
+            'FROM channels'
+        ].join('');
+
+        result = await conn.query(query);
+
+        return result;
+
+    } catch (err) {
+        console.log(err);
+    } finally {
+        if (conn) conn.release(); //release to pool
+    }
+}
+
+async function getWelcomeChannel() {
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        const query = [
+            'SELECT ',
+                'discord_id ',
+            'FROM channels ',
+            'WHERE name = ?'
+        ].join('');
+
+        const args = ["welcomeChannelID"];
+        
+        result = await conn.query(query, args);
+        return result;
+
+    } catch (err) {
+        console.log(err);
+    } finally {
+        if (conn) conn.release(); //release to pool
+    }
+}
+
+async function getRoleMessages(subscription_message_id) {
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        const query = [
+            'SELECT discord_id ',
+            'FROM roleMessages ',
+            'WHERE subscription_message_id = ?'
+        ].join('');
+
+        const args = [subscription_message_id];
+
+        result = await conn.query(query, args);
+        if (result != "") { result = result[0].discord_id; }
+
+        return result;
+
+    } catch (err) {
+        console.log(err);
+    } finally {
+        if (conn) conn.release(); //release to pool
+    }
+}
+
 async function getCourses() {
     let conn;
     try {
@@ -198,6 +332,8 @@ async function getRole(subscription_message_id) {
         const args = [subscription_message_id];
 
         result = await conn.query(query, args);
+        if (result != "") { result = result[0].discord_id; }
+
         return result;
 
     } catch (err) {
@@ -231,11 +367,16 @@ async function is_registered(discordId) {
 module.exports = {
     createPool,
     createTables,
+    insertChannel,
+    insertRoleMessage,
     insertCourse,
     insertRole,
     insertAnnouncement,
+    getChannels,
+    getWelcomeChannel,
+    getRoleMessages,
     getCourses,
     getRole,
     is_registered
-  };
+};
 

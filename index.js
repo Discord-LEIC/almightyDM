@@ -12,19 +12,26 @@ const config = require('./config.json');
 const prefix = config.prefix;
 
 let db = require('./database.js');
+let fetch = require('./fetch.js');
 
-const token = 'NzU3MDE0MzQxNTkyODA5NDky.X2aOiw.LKjemUNdmboKZTwp9ymjWq5qS98'; 
+const token = 'NzYwODcyOTUxNTkwNTUxNTYy.X3SYJw.5Ig4YHVBg1rhYKa6WxyXwx0gT5E'; 
 
 const roleSelectionEmoji = config.roleSelectionEmoji; // Emoji identifier used for role assignment
-const subscriptionChannelID = config.channels.subscribe; // #welcome channel ID (this is monitored for reactions)
-const welcomeChannelID = config.channels.welcomeChannelID;
-const welcomeMessageID = config.welcomeMessageID;
+
+let channelIDs;
 
 var guild;
 const guildID = config.guildID;
 
 function get_channel(id) {
     return guild.channels.cache.get(id);
+}
+
+function includesChannel(channelID) {
+    for (let i = 0; i < channelIDs.length; i++) {
+        if (channelIDs[i].discord_id === channelID) { return true; }
+    }
+    return false;
 }
 
 client.on("ready", async() => {
@@ -42,7 +49,7 @@ client.on("ready", async() => {
     console.log(`Logged in as ${client.user.tag} at ${guild.name}`);
     
     // TODO: REMOVE THIS
-    guild.channels.cache.forEach(channel => {
+    /*guild.channels.cache.forEach(channel => {
         if(channel.type != 'category'){
             console.log(`Deleting ${channel.name}`);
             channel.delete();
@@ -62,23 +69,15 @@ client.on("ready", async() => {
             console.log(`Deleting role ${role.name}`);    
             role.delete().catch(console.error);
         }
-    });
-
-    await setup.setup_server(guild);
+    });*/
     
+    //await setup.setup_server(guild);
+    
+    channelIDs = await fetch.fetchChannelIDs(guild, db);
+    await fetch.fetchMessages();
     //rss.start(guild);
     
     //TODO: Get this working
-   
-    // Fetch subscription messages
-    const subscriptionChannel = get_channel(subscriptionChannelID);
-    subscriptionChannel.messages.fetch()
-    .catch(console.error);
-
-    const welcomeChannel = get_channel(welcomeChannelID);
-    welcomeChannel.messages.fetch()
-    .catch(console.error);
-
 }); 
 
 client.on('messageReactionAdd', async(reaction, user) => {
@@ -86,42 +85,52 @@ client.on('messageReactionAdd', async(reaction, user) => {
     // Ignore reactions from bots
     if (user.bot) return;
     
+    let welcomeID = await db.getWelcomeChannel();
+
+    console.log("role: " + reaction.message.id);
+
     // Only process reactions from subscription channel
-    if (reaction.message.channel.id === subscriptionChannelID) {
+    if (welcomeID[0].discord_id !== reaction.message.channel.id && includesChannel(reaction.message.channel.id)) {
         // Assign role when the chosen reaction is selected
         if (reaction.emoji.identifier === roleSelectionEmoji) {
             const member = await guild.member(user);
-            const role_id = await db.getRole(reaction.message.id);
-    
+            let role_id = await db.getRole(reaction.message.id);
+            
+            if (role_id == "") { 
+                role_id = await db.getRoleMessages(reaction.message.id);
+            }
+
             // Ensures role exists
-            if (role_id === undefined) return;
-    
+            if (role_id == "") return;
+
             console.log(`${user.username} subscribed to ${guild.roles.cache.get(role_id).name}`);
+            
             member.roles.add(role_id);
         }
 
-    } else if(reaction.message.id === welcomeMessageID
-        && reaction.emoji.identifier === roleSelectionEmoji) {
-            if(await db.is_registered(user.id)) {
+    } else if (welcomeID[0].discord_id === reaction.message.channel.id && reaction.emoji.identifier === roleSelectionEmoji) {
+            if (await db.is_registered(user.id)) {
                 // grant student role
                 const member = await guild.member(user);
                 // const role_id = await db.getRole(reaction.message.id);
                 // if (role_id !== undefined) throw new Error("Undefined role");
-                member.roles.add("689962857655566380");
+                member.roles.add(config.studentRoleID);
 		console.log(`[${user.id}:${user.username}] Granting @student role`);
             } else {
                 reaction.users.remove(user);
 		console.log(`[${user.id}:${user.username}] Failed to register @student role`);
             }
+
     } else if (reaction.emoji.toString() === config.reactionEmoji && reaction.count >= config.reactionsCount && !reaction.message.pinned) {
         await reaction.message.pin();
     }
 });
 
 client.on('messageReactionRemove', async(reaction, user) => {
+    let welcomeID = await db.getWelcomeChannel();
 
     // Only process reactions from subscription channel
-    if (reaction.message.channel.id !== subscriptionChannelID) return;
+    if (welcomeID[0].discord_id !== reaction.message.channel.id && !includesChannel(reaction.message.channel.id)) return;
 
     // Ignore reactions from bots
     if (user.bot) return;
@@ -132,10 +141,11 @@ client.on('messageReactionRemove', async(reaction, user) => {
         const role_id = await db.getRole(reaction.message.id);
 
         // Ensures role exists
-        if (role_id === undefined) return;
+        if (role_id == "") return;
 
         console.log(`${member.user.username} unsubscribed to ${guild.roles.cache.get(role_id).name}`);
-        member.roles.remove(role_id);
+        
+        if (member.roles.includes(role_id)) { member.roles.remove(role_id); }
     }
 });
 

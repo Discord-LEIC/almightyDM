@@ -78,7 +78,7 @@ function generate_permissions(roleId, allowed) {
 
 async function setup_server(serverGuild) {
     // TODO: Uncomment this
-    //await db.createTables();
+    await db.createTables();
 
     // TODO: CLEAR SERVER SETTINGS
     console.log("Setting up server");
@@ -121,6 +121,7 @@ async function setup_server(serverGuild) {
             ])
         ]
     });
+    db.insertChannel(welcomeText.id, "welcomeChannelID");
 
     let rulesText = await create_channel(serverGuild, 'rules', {
         'type': 'text',
@@ -172,6 +173,7 @@ async function setup_server(serverGuild) {
             ])
         ]
     });
+    db.insertChannel(degreeText.id, "enrollDegreeChannelID")
 
     let yearText = await create_channel(serverGuild, 'enroll-year', {
         'type': 'text',
@@ -186,6 +188,7 @@ async function setup_server(serverGuild) {
             ])
         ]
     });
+    db.insertChannel(yearText.id, "enrollYearChannelID")
 
     //TODO: This is very ugly
     announcementsCategories['LEIC-A'] = await create_channel(serverGuild, 'Announcements-A', {
@@ -264,7 +267,7 @@ async function setup_server(serverGuild) {
             '#009de0',
             degreeText);
 
-        enrollment_mappings[message.id] = degreeRole.id.toString();
+        db.insertRoleMessage(degreeRole.id, message.id);
 
         // TODO: create enrollment channel for degree
         let enrollChannelName = `enroll-${degreeRoleName}`;
@@ -281,12 +284,13 @@ async function setup_server(serverGuild) {
                 ])
             ]
         });
+        db.insertChannel(enrollChannel.id, `enroll${degreeRoleName}ChannelID`)
         console.log(`[+] Creating enrollment channel ${enrollChannelName} with id ${enrollChannel.id}`);
 
         console.log(`[+] Retrieving courses from ${degree.acronym}...`);
         let courses = get_courses(degree.id);
 
-        continue
+        //continue
         for(const course of courses) {
 
             // TODO TODO: verificar se o role esta duplicado
@@ -361,8 +365,8 @@ async function setup_server(serverGuild) {
             let color = "";
 
             // TODO: Uncomment this please 
-            //await db.insertCourse(course.id, course.name, color, course.acronym, courseRoleName, degreeRoleName, "", course.term, announcementChannel.id, course.rss);
-            //await db.insertRole(courseRole.id, courseRoleName, courseRole.color, message.id, courseRoleName);
+            await db.insertCourse(course.id, course.name, color, course.acronym, courseRoleName, degreeRoleName, "", course.term, announcementChannel.id, course.rss);
+            await db.insertRole(courseRole.id, courseRoleName, courseRole.color, message.id, courseRoleName);
         }
 
         courses_db[degreeRoleName] = courses;
@@ -552,7 +556,7 @@ async function create_staff_section(serverGuild, everyoneRoleId){
         ]
     });
 
-    await create_channel(serverGuild, 'puppet-master', {
+    puppetMaster = await create_channel(serverGuild, 'puppet-master', {
         'type': 'text',
         'parent': staffCategory.id
     });
@@ -815,7 +819,7 @@ async function create_student_group_section(serverGuild, name, emote, color, eve
 
 async function send_initial_messages(rulesText, welcomeText, degreeText, yearText, faqtext, staffRole, everyoneRoleId, authenticatedID){
     // Send welcome message
-    await send_embeded_message(
+    let messageENG = await send_embeded_message(
         'Welcome to [LM]EIC’s official Discord! (English)',
         null,
         `This Discord Server is a collaborative effort to create a community and allow it to interact freely. \
@@ -832,7 +836,7 @@ async function send_initial_messages(rulesText, welcomeText, degreeText, yearTex
         welcomeText
     );
 
-    await send_embeded_message(
+    let messagePT = await send_embeded_message(
         'Bem-vindo ao Discord oficial de [LM]EIC! (Português)',
         null,
         `Este Discord é um esforço coletivo para criar a nossa comunidade e permitir que ela interaja livremente. Para tal asseguramos \ 
@@ -848,6 +852,7 @@ async function send_initial_messages(rulesText, welcomeText, degreeText, yearTex
         '#009de0',
         welcomeText
     );
+
     console.log(`[+] Sent welcome messages`);
 
     // Send rules message
@@ -931,12 +936,14 @@ async function send_year_messages(yeartext, categoryID, serverGuild, everyoneRol
             ]
         });
 
-        await send_subscription_message(
+        let message = await send_subscription_message(
             `[${yearRole.name}] Enroll in this year`,
             null,
             ``,
             '#ff5c5c',
             yeartext);
+        
+        db.insertRoleMessage(yearRole.id, message.id);
     }
 
     await send_embeded_message(
@@ -975,12 +982,14 @@ async function send_year_messages(yeartext, categoryID, serverGuild, everyoneRol
             ]
         });
 
-        await send_subscription_message(
+        let message = await send_subscription_message(
             `[${yearRole.name}] Enroll in this year`,
             null,
             ``,
             '#50a156',
             yeartext);
+
+        db.insertRoleMessage(yearRole.id, message.id);
     }
     console.log(`[+] Sent year messages`);
 }
