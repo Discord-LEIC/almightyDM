@@ -34,22 +34,8 @@ function includesChannel(channelID) {
     return false;
 }
 
-client.on("ready", async() => {
-    await db.createPool();
-    client.user.setActivity("0.75 Roulette");
-    
-    guild = await client.guilds.cache.get(guildID);
-    console.log(guild.name);
-
-    for (const file of commandFiles) {
-        const command = require(`./commands/${file}`);
-        client.commands.set(command.name, command);
-    }
-    
-    console.log(`Logged in as ${client.user.tag} at ${guild.name}`);
-    
-    // TODO: REMOVE THIS
-    /*guild.channels.cache.forEach(channel => {
+function clear_server() {
+    guild.channels.cache.forEach(channel => {
         if(channel.type != 'category'){
             console.log(`Deleting ${channel.name}`);
             channel.delete();
@@ -69,13 +55,31 @@ client.on("ready", async() => {
             console.log(`Deleting role ${role.name}`);    
             role.delete().catch(console.error);
         }
-    });*/
+    });
+}
+
+client.on("ready", async() => {
+    await db.createPool();
+    client.user.setActivity("0.75 Roulette");
     
-    //await setup.setup_server(guild);
+    guild = await client.guilds.cache.get(guildID);
+    console.log(guild.name);
+
+    for (const file of commandFiles) {
+        const command = require(`./commands/${file}`);
+        client.commands.set(command.name, command);
+    }
+    
+    console.log(`Logged in as ${client.user.tag} at ${guild.name}`);
+    
+    // TODO: REMOVE THIS
+    // clear_server();
+    // await setup.setup_server(guild);
+    // return;
     
     channelIDs = await fetch.fetchChannelIDs(guild, db);
     await fetch.fetchMessages();
-    //rss.start(guild);
+    rss.start(guild);
     
     //TODO: Get this working
 }); 
@@ -131,21 +135,24 @@ client.on('messageReactionRemove', async(reaction, user) => {
 
     // Only process reactions from subscription channel
     if (welcomeID[0].discord_id !== reaction.message.channel.id && !includesChannel(reaction.message.channel.id)) return;
-
+    
     // Ignore reactions from bots
     if (user.bot) return;
 
     // Assign role when the chosen reaction is selected
     if (reaction.emoji.identifier === roleSelectionEmoji) {
         const member = await guild.member(user);
-        const role_id = await db.getRole(reaction.message.id);
+        let role_id = await db.getRole(reaction.message.id);
+
+        if (role_id == "")
+            role_id = await db.getRoleMessages(reaction.message.id);
 
         // Ensures role exists
         if (role_id == "") return;
 
         console.log(`${member.user.username} unsubscribed to ${guild.roles.cache.get(role_id).name}`);
         
-        if (member.roles.includes(role_id)) { member.roles.remove(role_id); }
+        member.roles.remove(role_id);
     }
 });
 

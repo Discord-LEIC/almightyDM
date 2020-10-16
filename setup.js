@@ -78,7 +78,7 @@ function generate_permissions(roleId, allowed) {
 
 async function setup_server(serverGuild) {
     // TODO: Uncomment this
-    await db.createTables();
+    // await db.createTables();
 
     // TODO: CLEAR SERVER SETTINGS
     console.log("Setting up server");
