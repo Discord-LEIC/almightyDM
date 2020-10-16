@@ -93,7 +93,7 @@ async function start(guildServer) {
     courses = await db.getCourses();
 
     let i = 0;
-    var job = new CronJob('*/2 * * * * *', async () => {
+    var job = new CronJob('*/5 * * * * *', async () => {
         let now = new Date();
         console.log(`[${now}] Updating RSS feeds`);
 
