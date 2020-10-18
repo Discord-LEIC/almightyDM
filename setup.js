@@ -291,7 +291,6 @@ async function setup_server(serverGuild) {
         console.log(`[+] Retrieving courses from ${degree.acronym}...`);
         let courses = get_courses(degree.id);
 
-        //continue
         for(const course of courses) {
 
             // TODO TODO: verificar se o role esta duplicado
@@ -488,7 +487,6 @@ function get_acronym(name, acronym) {
         "Portfolio Pessoal 2": "PP2",
         "Análise e Integração de Dados": "AID",
         "Aprendizagem": "Aprendizagem",
-        "Bioinformática / Biologia Computacional": "BioInf",
         "Desenvolvimento de Aplicações Distribuídas": "DAD",
         "Design de Jogos": "DJ",
         "Fundamentos de Sistemas de Informação": "FSI",
@@ -502,6 +500,11 @@ function get_acronym(name, acronym) {
     if(name in customAcronyms) {
         return customAcronyms[name];
     } else {
+	// not recognizing BioInf because of UTF-8 character (maybe?)
+	let s = name.split(" ")
+	if(s[2] === "Biologia" && s[3] === "Computacional") {
+	    return "BioInf";
+	}
         return acronym.replace(/[\s0-9a-z]/g, ''); // remove lowercase and digits
     }
 }
