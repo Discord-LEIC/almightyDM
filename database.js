@@ -30,8 +30,8 @@ async function createTables() {
         
         const create_role_messages = [
             'CREATE OR REPLACE TABLE roleMessages (',
-                'discord_id VARCHAR(32) PRIMARY KEY, ',
-                'subscription_message_id VARCHAR(32) NOT NULL UNIQUE KEY',
+                'discord_id VARCHAR(32), ',
+                'subscription_message_id VARCHAR(32) PRIMARY KEY',
             ')'
         ].join('');
         
@@ -78,11 +78,10 @@ async function createTables() {
             'CREATE OR REPLACE TABLE announcements (',
                 'guid VARCHAR(32) NOT NULL, ',
                 'ts TIMESTAMP NOT NULL, ',
-                'permalink VARCHAR(128) NOT NULL, ',
+                'permalink VARCHAR(256) NOT NULL, ',
                 'author VARCHAR(128) NOT NULL, ',
                 'title VARCHAR(128) NOT NULL, ',
                 'description_hash VARCHAR(64) NOT NULL, ',
-                'color CHAR(6) NOT NULL, ',
                 'course_custom_acronym VARCHAR(32) NOT NULL, ',
                 'PRIMARY KEY (guid, course_custom_acronym), ',
 
@@ -216,12 +215,12 @@ async function insertAnnouncement(guid, ts, permalink, author, title, descriptio
         const query = [
             'INSERT INTO announcements (',
                 'guid, ts, permalink, author, title, ',
-                'description_hash, color, course_custom_acronym',
-            ') VALUE (?, ?, ?, ?, ?, ?, ?, ?)'
+                'description_hash, course_custom_acronym',
+            ') VALUE (?, ?, ?, ?, ?, ?, ?)'
         ].join('')
         
         const args = [guid, ts, permalink, author, title,
-            description_hash, "#009de0", course_custom_acronym]
+            description_hash, course_custom_acronym]
         
         await conn.query(query, args);
     } catch (err) {

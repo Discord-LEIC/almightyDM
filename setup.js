@@ -78,7 +78,7 @@ function generate_permissions(roleId, allowed) {
 
 async function setup_server(serverGuild) {
     // TODO: Uncomment this
-    await db.createTables();
+    // await db.createTables();
 
     // TODO: CLEAR SERVER SETTINGS
     console.log("Setting up server");
@@ -505,7 +505,7 @@ function get_acronym(name, acronym) {
 	if(s[2] === "Biologia" && s[3] === "Computacional") {
 	    return "BioInf";
 	}
-        return acronym.replace(/[\s0-9a-z]/g, ''); // remove lowercase and digits
+        return acronym.replace(/[\s0-9a-z\.]/g, ''); // remove lowercase and digits
     }
 }
 
@@ -826,16 +826,16 @@ async function create_student_group_section(serverGuild, name, emote, color, aut
 async function send_initial_messages(rulesText, welcomeText, degreeText, yearText, faqtext, staffRole, everyoneRoleId, authenticatedID){
     // Send welcome message
     let messageENG = await send_embeded_message(
-        'Welcome to [LM]EIC’s official Discord! (English)',
+        'Welcome to [LM]EIC’s official Discord! ',
         null,
         `This Discord Server is a collaborative effort to create a community and allow it to interact freely. \
         To allow this we can assure you this server is exclusive to **students**. We created discussion and annoucement \
         channels for each course, as well as channels that keep you informed about every activity our degrees have to offer!\n\n\
         **Instructions**\n\n\
-        **0.** Read the <#${rulesText.id}> (below).\n\n\
-        **0.75.** Prove you belong here by [identifying yourself here](https://leic-hub.rnl.tecnico.ulisboa.pt). Only afterwards will you\
+        **0** Prove you belong here by identifying yourself in this [**LINK**](https://leic-hub.rnl.tecnico.ulisboa.pt). Only afterwards will you\
         be granted access to our server. When you do, react to this message with ✋.\n\n\
-        **1.** Sign up in your correct degree in <#${degreeText.id}>, in the courses you're taking #enroll-<course> and in your year <#${yearText.id}>, \
+        **0.75.** Read the <#${rulesText.id}> (below).\n\n\
+        **1.** Sign up in your correct degree in <#${degreeText.id}>, in the courses you're taking #enroll-<degree> and in your year <#${yearText.id}>, \
         reacting with ✋ to the appropriate message.\n\n\
         **2.** Any additional doubts check <#${faqtext.id}>\n\n`,
         '#009de0',
@@ -843,6 +843,9 @@ async function send_initial_messages(rulesText, welcomeText, degreeText, yearTex
     );
 
     messageENG.react(roleSelectionEmoji);
+    db.insertRoleMessage(authenticatedID.id, messageENG.id);
+
+	/*
     let messagePT = await send_embeded_message(
         'Bem-vindo ao Discord oficial de [LM]EIC! (Português)',
         null,
@@ -853,7 +856,7 @@ async function send_initial_messages(rulesText, welcomeText, degreeText, yearTex
         **0.** Lê o canal de <#${rulesText.id}> (em baixo).\n\n\
         **0.75.** Prova que pertences aqui fazendo a [tua autenticação](https://leic-hub.rnl.tecnico.ulisboa.pt). Só assim terás acesso ao \
         conteúdo do servidor. Quando o fizeres, reage a esta mensagem com ✋.\n\n\
-        **1.** Inscreve-te no curso correcto no canal <#${degreeText.id}>, nas cadeiras que estás a fazer #enroll-<course> e no teu <#${yearText.id}>, \
+        **1.** Inscreve-te no curso correcto no canal <#${degreeText.id}>, nas cadeiras que estás a fazer #enroll-<<degree> e no teu <#${yearText.id}>, \
         reagindo com ✋ à mensagem apropriada.\n\n\
         **2.** Qualquer dúvida adicional consulta <#${faqtext.id}>\n\n`, 
         '#009de0',
@@ -861,11 +864,14 @@ async function send_initial_messages(rulesText, welcomeText, degreeText, yearTex
     );
 
     messagePT.react(roleSelectionEmoji);
+    db.insertRoleMessage(authenticatedID.id, messagePT.id);
+    */
     console.log(`[+] Sent welcome messages`);
+
 
     // Send rules message
     await send_embeded_message(
-        'Rules (English)',
+        'Rules',
         null,
         `**0.** Be respectful and mindful of others, both in tone and in content.\n\n\ 
         **0.75** Respect the Staff and their decisions, we're doing our very best.\ 
@@ -878,6 +884,7 @@ async function send_initial_messages(rulesText, welcomeText, degreeText, yearTex
         rulesText
     );
 
+	/*
     await send_embeded_message(
         'Regras (Português)',
         null,
@@ -891,6 +898,7 @@ async function send_initial_messages(rulesText, welcomeText, degreeText, yearTex
         '#009de0',
         rulesText
     ); 
+    */
     console.log(`[+] Sent rules messages`);
 }
 

@@ -14,7 +14,7 @@ const prefix = config.prefix;
 let db = require('./database.js');
 let fetch = require('./fetch.js');
 
-const token = 'NzYwODcyOTUxNTkwNTUxNTYy.X3SYJw.5Ig4YHVBg1rhYKa6WxyXwx0gT5E'; 
+const token = 'NzYwNTk1NTg0MDAzOTk3ODI4.X3OV1g.JlDhszyUEq5iFbjKg5Nv67xQh38'; 
 
 const roleSelectionEmoji = config.roleSelectionEmoji; // Emoji identifier used for role assignment
 
@@ -60,10 +60,10 @@ function clear_server() {
 
 client.on("ready", async() => {
     await db.createPool();
-    client.user.setActivity("0.75 Roulette");
+
+    // client.user.setActivity("0.75 Roulette");
     
-    guild = await client.guilds.cache.get(guildID);
-    console.log(guild.name);
+    guild = await client.guilds.fetch(guildID);
 
     for (const file of commandFiles) {
         const command = require(`./commands/${file}`);
@@ -75,6 +75,7 @@ client.on("ready", async() => {
     // TODO: REMOVE THIS
     // clear_server();
     // await setup.setup_server(guild);
+    // return
 
     channelIDs = await fetch.fetchChannelIDs(guild, db);
     await fetch.fetchMessages();
@@ -111,13 +112,12 @@ client.on('messageReactionAdd', async(reaction, user) => {
             member.roles.add(role_id);
         }
 
-    } else if (welcomeID === reaction.message.channel.id && reaction.emoji.identifier === roleSelectionEmoji) {
+    } else if (reaction.message.channel.id === welcomeID && reaction.emoji.identifier === roleSelectionEmoji) {
             if (await db.is_registered(user.id)) {
                 // grant student role
                 const member = await guild.member(user);
-                // const role_id = await db.getRole(reaction.message.id);
-                // if (role_id !== undefined) throw new Error("Undefined role");
-                member.roles.add(config.studentRoleID);
+                role_id = await db.getRoleMessages(reaction.message.id);
+                member.roles.add(role_id);
 		console.log(`[${user.id}:${user.username}] Granting @student role`);
             } else {
                 reaction.users.remove(user);
