@@ -77,7 +77,7 @@ function generate_permissions(roleId, allowed) {
 }
 
 async function setup_server(serverGuild) {
-    // TODO: Uncomment this
+    // TODO: Extract to schema.sql
     // await db.createTables();
 
     // TODO: CLEAR SERVER SETTINGS
