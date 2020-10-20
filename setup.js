@@ -310,10 +310,7 @@ async function setup_server(serverGuild) {
             let message = await send_subscription_message(
             `[${courseRoleName}] Enroll in this course`,
             null,
-            `If you're currently enrolled in this course react with ✋ \
-            to this message to gain the <@&${courseRole.id}> role, giving \
-            you access to the specific announcement and discussion channels. \
-            If at any point you wish to lose this role just remove the react.`,
+            "",
             randomColor(),
             enrollChannel);
 
