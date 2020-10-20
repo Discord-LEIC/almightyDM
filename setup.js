@@ -897,7 +897,7 @@ async function send_initial_messages(rulesText, welcomeText, degreeText, yearTex
 }
 
 async function send_year_messages(yeartext, categoryID, serverGuild, everyoneRoleId, authenticatedID){
-    let years = ['15-16', '16-17', '17-18', '18-19', '19-20', '20-21']
+    let years = ['14-15', '15-16', '16-17', '17-18', '18-19', '19-20', '20-21']
 
     // Send messages
     await send_embeded_message(
