@@ -243,7 +243,6 @@ async function setup_server(serverGuild) {
 
     let degrees = get_degrees(targets);
     console.log(`[+] Got degrees ${degrees}`);
-    let courses_db = {}
 
     for(const degree of degrees) {
 
@@ -368,8 +367,6 @@ async function setup_server(serverGuild) {
             await db.insertCourse(course.id, course.name, color, course.acronym, courseRoleName, degreeRoleName, "", course.term, announcementChannel.id, course.rss);
             await db.insertRole(courseRole.id, courseRoleName, courseRole.color, message.id, courseRoleName);
         }
-
-        courses_db[degreeRoleName] = courses;
     }
 
     //Creates channels and categories
@@ -1019,7 +1016,6 @@ async function send_study_messages(studyText, serverGuild){
         studyText
     );
 }
-
 
 module.exports.create_channel = create_channel;
 module.exports.setup_server = setup_server;
