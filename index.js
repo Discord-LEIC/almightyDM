@@ -71,11 +71,6 @@ client.on("ready", async() => {
     }
     
     console.log(`Logged in as ${client.user.tag} at ${guild.name}`);
-    
-    // TODO: REMOVE THIS
-    // clear_server();
-    // await setup.setup_server(guild);
-    // return
 
     channelIDs = await fetch.fetchChannelIDs(guild, db);
     await fetch.fetchMessages();

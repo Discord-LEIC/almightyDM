@@ -1,14 +1,14 @@
 {
     "prefix": "$$$",
     "pinner": "pushpin",
-    "guildID": "768146856298807307",
+    "guildID": "760586549640953887",
     "roleSelectionEmoji": "%E2%9C%8B",
     "reactionEmoji": "📌",
     "reactionsCount": 3,
 
-    "studentRoleID": "766764453021745152",
-    "roleStaff": "766764303122300968",
+    "studentRoleID": "364873933964574724",
+    "roleStaff": "769492488187674664",
     "channels": {
-        "puppetMaster": "766764454754910228"
+        "puppetMaster": "769492490482876459"
     }
 }
