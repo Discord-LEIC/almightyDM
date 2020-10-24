@@ -77,7 +77,7 @@ function generate_permissions(roleId, allowed) {
 }
 
 async function setup_server(serverGuild) {
-    // TODO: Uncomment this
+    // TODO: Extract to schema.sql
     // await db.createTables();
 
     // TODO: CLEAR SERVER SETTINGS
@@ -243,7 +243,6 @@ async function setup_server(serverGuild) {
 
     let degrees = get_degrees(targets);
     console.log(`[+] Got degrees ${degrees}`);
-    let courses_db = {}
 
     for(const degree of degrees) {
 
@@ -311,10 +310,7 @@ async function setup_server(serverGuild) {
             let message = await send_subscription_message(
             `[${courseRoleName}] Enroll in this course`,
             null,
-            `If you're currently enrolled in this course react with ✋ \
-            to this message to gain the <@&${courseRole.id}> role, giving \
-            you access to the specific announcement and discussion channels. \
-            If at any point you wish to lose this role just remove the react.`,
+            "",
             randomColor(),
             enrollChannel);
 
@@ -368,8 +364,6 @@ async function setup_server(serverGuild) {
             await db.insertCourse(course.id, course.name, color, course.acronym, courseRoleName, degreeRoleName, "", course.term, announcementChannel.id, course.rss);
             await db.insertRole(courseRole.id, courseRoleName, courseRole.color, message.id, courseRoleName);
         }
-
-        courses_db[degreeRoleName] = courses;
     }
 
     //Creates channels and categories
@@ -903,7 +897,7 @@ async function send_initial_messages(rulesText, welcomeText, degreeText, yearTex
 }
 
 async function send_year_messages(yeartext, categoryID, serverGuild, everyoneRoleId, authenticatedID){
-    let years = ['15-16', '16-17', '17-18', '18-19', '19-20', '20-21']
+    let years = ['14-15', '15-16', '16-17', '17-18', '18-19', '19-20', '20-21']
 
     // Send messages
     await send_embeded_message(
@@ -1019,7 +1013,6 @@ async function send_study_messages(studyText, serverGuild){
         studyText
     );
 }
-
 
 module.exports.create_channel = create_channel;
 module.exports.setup_server = setup_server;
