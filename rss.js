@@ -95,11 +95,11 @@ async function start(guildServer) {
     let i = 0;
     var job = new CronJob('*/5 * * * * *', async () => {
         let now = new Date();
-        console.log(`[${now}] Updating RSS feeds`);
+        // console.log(`[${now}] Updating RSS feeds`);
 
         i = (i + 1) % courses.length;
         let course = courses[i]; 
-        console.log(`[+] Fetching ${course.degree}-${course.custom_acronym} at ${course.rss_link}`);
+	// console.log(`[+] Fetching ${course.degree}-${course.custom_acronym} at ${course.rss_link}`);
         
         let newestTS = await db.getNewestAnnouncementTS(course.custom_acronym);
         

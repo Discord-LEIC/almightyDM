@@ -14,8 +14,7 @@ const prefix = config.prefix;
 let db = require('./database.js');
 let fetch = require('./fetch.js');
 
-const token = 'NzYwNTk1NTg0MDAzOTk3ODI4.X3OV1g.JlDhszyUEq5iFbjKg5Nv67xQh38'; 
-
+const token = process.env.DISCORD_TOKEN; 
 const roleSelectionEmoji = config.roleSelectionEmoji; // Emoji identifier used for role assignment
 
 let channelIDs;
@@ -80,13 +79,13 @@ client.on("ready", async() => {
 }); 
 
 client.on('messageReactionAdd', async(reaction, user) => {
-    
+
     // Ignore reactions from bots
     if (user.bot) return;
     
     let welcomeID = await db.getWelcomeChannel();
 
-    console.log("role: " + reaction.message.id);
+    console.log(`Got reaction in ${reaction.message.id}`);
 
     // Only process reactions from subscription channel
     if (welcomeID !== reaction.message.channel.id && includesChannel(reaction.message.channel.id)) {
