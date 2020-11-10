@@ -11,9 +11,6 @@ const setup = require('./setup');
 const config = require('./config.json');
 const { prefix } = require('./config.json');
 
-
-const token = 'NzYwODcyOTUxNTkwNTUxNTYy.X3SYJw.5Ig4YHVBg1rhYKa6WxyXwx0gT5E';
-
 const subscriptionChannelID = config.channels.subscribe; // #welcome channel ID (this is monitored for reactions)
 const roleSelectionEmoji = config.roleSelectionEmoji; // Emoji identifier used for role assignment
 const msg_roles = config.msg_roles; // Message ID vs Role ID mapping
