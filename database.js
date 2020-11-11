@@ -219,8 +219,15 @@ async function insertAnnouncement(guid, ts, permalink, author, title, descriptio
             ') VALUE (?, ?, ?, ?, ?, ?, ?)'
         ].join('')
         
-        const args = [guid, ts, permalink, author, title,
-            description_hash, course_custom_acronym]
+        const args = [
+            guid, 
+            ts, 
+            permalink, 
+            author, 
+            title.substring(0, 128),
+            description_hash, 
+            course_custom_acronym
+        ]
         
         await conn.query(query, args);
     } catch (err) {
